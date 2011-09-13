@@ -2,11 +2,10 @@
 #define CLEW_HPP_INCLUDED
 
 //////////////////////////////////////////////////////////////////////////
-//  Copyright (c) 2009 Organic Vectory B.V.
+//  Copyright (c) 2009-2011 Organic Vectory B.V., KindDragon
 //  Written by George van Venrooij
 //
-//  Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file license.txt)
+//  Distributed under the MIT License.
 //////////////////////////////////////////////////////////////////////////
 
 //! \file clew.h
@@ -1686,14 +1685,14 @@ typedef CL_API_ENTRY cl_context (CL_API_CALL *
 PFNCLCREATECONTEXT)(const cl_context_properties * /* properties */,
                 cl_uint                       /* num_devices */,
                 const cl_device_id *          /* devices */,
-                void (*pfn_notify)(const char *, const void *, size_t, void *) /* pfn_notify */,
+                void (CL_CALLBACK * /* pfn_notify */)(const char *, const void *, size_t, void *),
                 void *                        /* user_data */,
                 cl_int *                      /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
 
 typedef CL_API_ENTRY cl_context (CL_API_CALL *
 PFNCLCREATECONTEXTFROMTYPE)(const cl_context_properties * /* properties */,
                         cl_device_type                /* device_type */,
-                        void (*pfn_notify)(const char *, const void *, size_t, void *) /* pfn_notify */,
+                        void (CL_CALLBACK *     /* pfn_notify*/ )(const char *, const void *, size_t, void *),
                         void *                        /* user_data */,
                         cl_int *                      /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
 
@@ -2260,12 +2259,17 @@ CLEW_FUN_EXPORT     PFNCLGETEVENTINFO                   __clewGetEventInfo      
 CLEW_FUN_EXPORT     PFNCLCREATEUSEREVENT                __clewCreateUserEvent               ;
 CLEW_FUN_EXPORT     PFNCLRETAINEVENT                    __clewRetainEvent                   ;
 CLEW_FUN_EXPORT     PFNCLRELEASEEVENT                   __clewReleaseEvent                  ;
+CLEW_FUN_EXPORT     PFNCLSETUSEREVENTSTATUS             __clewSetUserEventStatus            ;
+CLEW_FUN_EXPORT     PFNCLSETEVENTCALLBACK               __clewSetEventCallback              ;
 CLEW_FUN_EXPORT     PFNCLGETEVENTPROFILINGINFO          __clewGetEventProfilingInfo         ;
 CLEW_FUN_EXPORT     PFNCLFLUSH                          __clewFlush                         ;
 CLEW_FUN_EXPORT     PFNCLFINISH                         __clewFinish                        ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEREADBUFFER              __clewEnqueueReadBuffer             ;
+CLEW_FUN_EXPORT     PFNCLENQUEUEREADBUFFERRECT          __clewEnqueueReadBufferRect         ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEWRITEBUFFER             __clewEnqueueWriteBuffer            ;
+CLEW_FUN_EXPORT     PFNCLENQUEUEWRITEBUFFERRECT         __clewEnqueueWriteBufferRect        ;
 CLEW_FUN_EXPORT     PFNCLENQUEUECOPYBUFFER              __clewEnqueueCopyBuffer             ;
+CLEW_FUN_EXPORT     PFNCLENQUEUECOPYBUFFERRECT          __clewEnqueueCopyBufferRect         ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEREADIMAGE               __clewEnqueueReadImage              ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEWRITEIMAGE              __clewEnqueueWriteImage             ;
 CLEW_FUN_EXPORT     PFNCLENQUEUECOPYIMAGE               __clewEnqueueCopyImage              ;
@@ -2341,14 +2345,20 @@ CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESS    __clewGetExtensionFuncti
 #define	clGetKernelWorkGroupInfo        CLEW_GET_FUN(__clewGetKernelWorkGroupInfo        )
 #define	clWaitForEvents                 CLEW_GET_FUN(__clewWaitForEvents                 )
 #define	clGetEventInfo                  CLEW_GET_FUN(__clewGetEventInfo                  )
+#define	clCreateUserEvent               CLEW_GET_FUN(__clewCreateUserEvent               )
 #define	clRetainEvent                   CLEW_GET_FUN(__clewRetainEvent                   )
 #define	clReleaseEvent                  CLEW_GET_FUN(__clewReleaseEvent                  )
+#define	clSetUserEventStatus            CLEW_GET_FUN(__clewSetUserEventStatus            )
+#define	clSetEventCallback              CLEW_GET_FUN(__clewSetEventCallback              )
 #define	clGetEventProfilingInfo         CLEW_GET_FUN(__clewGetEventProfilingInfo         )
 #define	clFlush                         CLEW_GET_FUN(__clewFlush                         )
 #define	clFinish                        CLEW_GET_FUN(__clewFinish                        )
 #define	clEnqueueReadBuffer             CLEW_GET_FUN(__clewEnqueueReadBuffer             )
+#define	clEnqueueReadBufferRect         CLEW_GET_FUN(__clewEnqueueReadBufferRect         )
 #define	clEnqueueWriteBuffer            CLEW_GET_FUN(__clewEnqueueWriteBuffer            )
+#define	clEnqueueWriteBufferRect        CLEW_GET_FUN(__clewEnqueueWriteBufferRect        )
 #define	clEnqueueCopyBuffer             CLEW_GET_FUN(__clewEnqueueCopyBuffer             )
+#define	clEnqueueCopyBufferRect         CLEW_GET_FUN(__clewEnqueueCopyBufferRect         )
 #define	clEnqueueReadImage              CLEW_GET_FUN(__clewEnqueueReadImage              )
 #define	clEnqueueWriteImage             CLEW_GET_FUN(__clewEnqueueWriteImage             )
 #define	clEnqueueCopyImage              CLEW_GET_FUN(__clewEnqueueCopyImage              )
