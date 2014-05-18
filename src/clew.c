@@ -55,8 +55,7 @@ PFNCLSETCOMMANDQUEUEPROPERTY        __clewSetCommandQueueProperty       = NULL;
 #endif
 PFNCLCREATEBUFFER                   __clewCreateBuffer                  = NULL;
 PFNCLCREATESUBBUFFER                __clewCreateSubBuffer               = NULL;
-PFNCLCREATEIMAGE2D                  __clewCreateImage2D                 = NULL;
-PFNCLCREATEIMAGE3D                  __clewCreateImage3D                 = NULL;
+PFNCLCREATEIMAGE                    __clewCreateImage                   = NULL;
 PFNCLRETAINMEMOBJECT                __clewRetainMemObject               = NULL;
 PFNCLRELEASEMEMOBJECT               __clewReleaseMemObject              = NULL;
 PFNCLGETSUPPORTEDIMAGEFORMATS       __clewGetSupportedImageFormats      = NULL;
@@ -69,10 +68,10 @@ PFNCLRELEASESAMPLER                 __clewReleaseSampler                = NULL;
 PFNCLGETSAMPLERINFO                 __clewGetSamplerInfo                = NULL;
 PFNCLCREATEPROGRAMWITHSOURCE        __clewCreateProgramWithSource       = NULL;
 PFNCLCREATEPROGRAMWITHBINARY        __clewCreateProgramWithBinary       = NULL;
+PFNCLCREATEPROGRAMWITHBUILTINKERNELS __clewCreateProgramWithBuiltInKernels = NULL;
 PFNCLRETAINPROGRAM                  __clewRetainProgram                 = NULL;
 PFNCLRELEASEPROGRAM                 __clewReleaseProgram                = NULL;
 PFNCLBUILDPROGRAM                   __clewBuildProgram                  = NULL;
-PFNCLUNLOADCOMPILER                 __clewUnloadCompiler                = NULL;
 PFNCLGETPROGRAMINFO                 __clewGetProgramInfo                = NULL;
 PFNCLGETPROGRAMBUILDINFO            __clewGetProgramBuildInfo           = NULL;
 PFNCLCREATEKERNEL                   __clewCreateKernel                  = NULL;
@@ -109,12 +108,20 @@ PFNCLENQUEUEUNMAPMEMOBJECT          __clewEnqueueUnmapMemObject         = NULL;
 PFNCLENQUEUENDRANGEKERNEL           __clewEnqueueNDRangeKernel          = NULL;
 PFNCLENQUEUETASK                    __clewEnqueueTask                   = NULL;
 PFNCLENQUEUENATIVEKERNEL            __clewEnqueueNativeKernel           = NULL;
+
+
+
+PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensionFunctionAddressForPlatform = NULL;
+
+#ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+PFNCLCREATEIMAGE2D                  __clewCreateImage2D                 = NULL;
+PFNCLCREATEIMAGE3D                  __clewCreateImage3D                 = NULL;
 PFNCLENQUEUEMARKER                  __clewEnqueueMarker                 = NULL;
 PFNCLENQUEUEWAITFOREVENTS           __clewEnqueueWaitForEvents          = NULL;
 PFNCLENQUEUEBARRIER                 __clewEnqueueBarrier                = NULL;
+PFNCLUNLOADCOMPILER                 __clewUnloadCompiler                = NULL;
 PFNCLGETEXTENSIONFUNCTIONADDRESS    __clewGetExtensionFunctionAddress   = NULL;
-PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensionFunctionAddressForPlatform = NULL;
-
+#endif
 
 static void clewExit(void)
 {
@@ -186,9 +193,8 @@ int clewInit()
     __clewSetCommandQueueProperty       = (PFNCLSETCOMMANDQUEUEPROPERTY     )CLEW_DYNLIB_IMPORT(module, "clSetCommandQueueProperty");
 #endif
     __clewCreateBuffer                  = (PFNCLCREATEBUFFER                )CLEW_DYNLIB_IMPORT(module, "clCreateBuffer");
-    __clewCreateSubBuffer               = (PFNCLCREATESUBBUFFER                )CLEW_DYNLIB_IMPORT(module, "clCreateBuffer");
-    __clewCreateImage2D                 = (PFNCLCREATEIMAGE2D               )CLEW_DYNLIB_IMPORT(module, "clCreateImage2D");
-    __clewCreateImage3D                 = (PFNCLCREATEIMAGE3D               )CLEW_DYNLIB_IMPORT(module, "clCreateImage3D");
+    __clewCreateSubBuffer               = (PFNCLCREATESUBBUFFER             )CLEW_DYNLIB_IMPORT(module, "clCreateBuffer");
+    __clewCreateImage                   = (PFNCLCREATEIMAGE                 )CLEW_DYNLIB_IMPORT(module, "clCreateImage");
     __clewRetainMemObject               = (PFNCLRETAINMEMOBJECT             )CLEW_DYNLIB_IMPORT(module, "clRetainMemObject");
     __clewReleaseMemObject              = (PFNCLRELEASEMEMOBJECT            )CLEW_DYNLIB_IMPORT(module, "clReleaseMemObject");
     __clewGetSupportedImageFormats      = (PFNCLGETSUPPORTEDIMAGEFORMATS    )CLEW_DYNLIB_IMPORT(module, "clGetSupportedImageFormats");
@@ -201,10 +207,11 @@ int clewInit()
     __clewGetSamplerInfo                = (PFNCLGETSAMPLERINFO              )CLEW_DYNLIB_IMPORT(module, "clGetSamplerInfo");
     __clewCreateProgramWithSource       = (PFNCLCREATEPROGRAMWITHSOURCE     )CLEW_DYNLIB_IMPORT(module, "clCreateProgramWithSource");
     __clewCreateProgramWithBinary       = (PFNCLCREATEPROGRAMWITHBINARY     )CLEW_DYNLIB_IMPORT(module, "clCreateProgramWithBinary");
+    __clewCreateProgramWithBuiltInKernels =(PFNCLCREATEPROGRAMWITHBUILTINKERNELS)CLEW_DYNLIB_IMPORT(module, "clCreateProgramWithBuiltInKernels");
     __clewRetainProgram                 = (PFNCLRETAINPROGRAM               )CLEW_DYNLIB_IMPORT(module, "clRetainProgram");
     __clewReleaseProgram                = (PFNCLRELEASEPROGRAM              )CLEW_DYNLIB_IMPORT(module, "clReleaseProgram");
     __clewBuildProgram                  = (PFNCLBUILDPROGRAM                )CLEW_DYNLIB_IMPORT(module, "clBuildProgram");
-    __clewUnloadCompiler                = (PFNCLUNLOADCOMPILER              )CLEW_DYNLIB_IMPORT(module, "clUnloadCompiler");
+
     __clewGetProgramInfo                = (PFNCLGETPROGRAMINFO              )CLEW_DYNLIB_IMPORT(module, "clGetProgramInfo");
     __clewGetProgramBuildInfo           = (PFNCLGETPROGRAMBUILDINFO         )CLEW_DYNLIB_IMPORT(module, "clGetProgramBuildInfo");
     __clewCreateKernel                  = (PFNCLCREATEKERNEL                )CLEW_DYNLIB_IMPORT(module, "clCreateKernel");
@@ -241,12 +248,19 @@ int clewInit()
     __clewEnqueueNDRangeKernel          = (PFNCLENQUEUENDRANGEKERNEL        )CLEW_DYNLIB_IMPORT(module, "clEnqueueNDRangeKernel");
     __clewEnqueueTask                   = (PFNCLENQUEUETASK                 )CLEW_DYNLIB_IMPORT(module, "clEnqueueTask");
     __clewEnqueueNativeKernel           = (PFNCLENQUEUENATIVEKERNEL         )CLEW_DYNLIB_IMPORT(module, "clEnqueueNativeKernel");
+
+
+
+    __clewGetExtensionFunctionAddressForPlatform = (PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM)CLEW_DYNLIB_IMPORT(module, "clGetExtensionFunctionAddressForPlatform");
+#ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+    __clewCreateImage2D                 = (PFNCLCREATEIMAGE2D               )CLEW_DYNLIB_IMPORT(module, "clCreateImage2D");
+    __clewCreateImage3D                 = (PFNCLCREATEIMAGE3D               )CLEW_DYNLIB_IMPORT(module, "clCreateImage3D");
     __clewEnqueueMarker                 = (PFNCLENQUEUEMARKER               )CLEW_DYNLIB_IMPORT(module, "clEnqueueMarker");
     __clewEnqueueWaitForEvents          = (PFNCLENQUEUEWAITFOREVENTS        )CLEW_DYNLIB_IMPORT(module, "clEnqueueWaitForEvents");
     __clewEnqueueBarrier                = (PFNCLENQUEUEBARRIER              )CLEW_DYNLIB_IMPORT(module, "clEnqueueBarrier");
+    __clewUnloadCompiler                = (PFNCLUNLOADCOMPILER              )CLEW_DYNLIB_IMPORT(module, "clUnloadCompiler");
     __clewGetExtensionFunctionAddress   = (PFNCLGETEXTENSIONFUNCTIONADDRESS )CLEW_DYNLIB_IMPORT(module, "clGetExtensionFunctionAddress");
-    __clewGetExtensionFunctionAddressForPlatform = (PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM)CLEW_DYNLIB_IMPORT(module, "clGetExtensionFunctionAddressForPlatform");
-
+#endif
     if(__clewGetPlatformIDs == NULL) return 0;
     if(__clewGetPlatformInfo == NULL) return 0;
     if(__clewGetDeviceIDs == NULL) return 0;

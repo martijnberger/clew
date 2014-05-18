@@ -88,9 +88,46 @@ extern "C" {
     #define CL_EXT_SUFFIX__VERSION_1_1
     #define CL_API_SUFFIX__VERSION_1_2
     #define CL_EXT_SUFFIX__VERSION_1_2
-    #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
-    #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED
-    #define CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED
+
+    #ifdef __GNUC__
+        #ifdef CL_USE_DEPRECATED_OPENCL_1_0_APIS
+            #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
+            #define CL_EXT_PREFIX__VERSION_1_0_DEPRECATED
+        #else
+            #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED __attribute__((deprecated))
+            #define CL_EXT_PREFIX__VERSION_1_0_DEPRECATED
+        #endif
+
+        #ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+            #define CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED
+            #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED
+        #else
+            #define CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED __attribute__((deprecated))
+            #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED
+        #endif
+    #elif _WIN32
+        #ifdef CL_USE_DEPRECATED_OPENCL_1_0_APIS
+            #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
+            #define CL_EXT_PREFIX__VERSION_1_0_DEPRECATED
+        #else
+            #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
+            #define CL_EXT_PREFIX__VERSION_1_0_DEPRECATED __declspec(deprecated)
+        #endif
+
+        #ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+            #define CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED
+            #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED
+        #else
+            #define CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED
+            #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED __declspec(deprecated)
+        #endif
+    #else
+        #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
+        #define CL_EXT_PREFIX__VERSION_1_0_DEPRECATED
+
+        #define CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED
+        #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED
+    #endif
 #endif
 
 #if (defined (_WIN32) && defined(_MSC_VER))
@@ -1878,6 +1915,13 @@ PFNCLCREATESUBBUFFER)(cl_mem   			/* buffer */,
                const void *       		/* buffer_create_info */,
                cl_int *     			/* errcode_ret */) CL_API_SUFFIX__VERSION_1_1;
 
+typedef CL_API_ENTRY cl_mem (CL_API_CALL *
+PFNCLCREATEIMAGE)(cl_context              /* context */,
+             cl_mem_flags            /* flags */,
+             const cl_image_format * /* image_format */,
+             const cl_image_desc *   /* image_desc */,
+             void *                  /* host_ptr */,
+             cl_int *                /* errcode_ret */) CL_API_SUFFIX__VERSION_1_2;
 
 typedef CL_API_ENTRY cl_int (CL_API_CALL *
 PFNCLRETAINMEMOBJECT)(cl_mem /* memobj */) CL_API_SUFFIX__VERSION_1_0;
@@ -1949,6 +1993,13 @@ PFNCLCREATEPROGRAMWITHBINARY)(cl_context                     /* context */,
                           const unsigned char **         /* binaries */,
                           cl_int *                       /* binary_status */,
                           cl_int *                       /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
+
+typedef CL_API_ENTRY cl_program (CL_API_CALL *
+PFNCLCREATEPROGRAMWITHBUILTINKERNELS)(cl_context            /* context */,
+                                 cl_uint               /* num_devices */,
+                                 const cl_device_id *  /* device_list */,
+                                 const char *          /* kernel_names */,
+                                 cl_int *              /* errcode_ret */) CL_API_SUFFIX__VERSION_1_2;
 
 typedef CL_API_ENTRY cl_int (CL_API_CALL *
 PFNCLRETAINPROGRAM)(cl_program /* program */) CL_API_SUFFIX__VERSION_1_0;
@@ -2279,7 +2330,7 @@ PFNCLENQUEUENATIVEKERNEL)(cl_command_queue  /* command_queue */,
 typedef CL_API_ENTRY void * (CL_API_CALL *
 PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM)(cl_platform_id /* platform */,
                                          const char *   /* func_name */) CL_API_SUFFIX__VERSION_1_2;
-
+#ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
 // Deprecated OpenCL 1.1 APIs
 typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_mem (CL_API_CALL *
 PFNCLCREATEIMAGE2D)(cl_context              /* context */,
@@ -2320,6 +2371,7 @@ PFNCLUNLOADCOMPILER)(void) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
 typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED void * (CL_API_CALL *
 PFNCLGETEXTENSIONFUNCTIONADDRESS)(const char * /* func_name */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
+#endif
 
 #define CLEW_STATIC
 
@@ -2359,13 +2411,9 @@ CLEW_FUN_EXPORT     PFNCLCREATECOMMANDQUEUE             __clewCreateCommandQueue
 CLEW_FUN_EXPORT     PFNCLRETAINCOMMANDQUEUE             __clewRetainCommandQueue            ;
 CLEW_FUN_EXPORT     PFNCLRELEASECOMMANDQUEUE            __clewReleaseCommandQueue           ;
 CLEW_FUN_EXPORT     PFNCLGETCOMMANDQUEUEINFO            __clewGetCommandQueueInfo           ;
-#ifdef CL_USE_DEPRECATED_OPENCL_1_0_APIS
-CLEW_FUN_EXPORT     PFNCLSETCOMMANDQUEUEPROPERTY        __clewSetCommandQueueProperty       ;
-#endif
 CLEW_FUN_EXPORT     PFNCLCREATEBUFFER                   __clewCreateBuffer                  ;
 CLEW_FUN_EXPORT     PFNCLCREATESUBBUFFER                __clewCreateSubBuffer               ;
-CLEW_FUN_EXPORT     PFNCLCREATEIMAGE2D                  __clewCreateImage2D                 ;
-CLEW_FUN_EXPORT     PFNCLCREATEIMAGE3D                  __clewCreateImage3D                 ;
+CLEW_FUN_EXPORT     PFNCLCREATEIMAGE                    __clewCreateImage                   ;
 CLEW_FUN_EXPORT     PFNCLRETAINMEMOBJECT                __clewRetainMemObject               ;
 CLEW_FUN_EXPORT     PFNCLRELEASEMEMOBJECT               __clewReleaseMemObject              ;
 CLEW_FUN_EXPORT     PFNCLGETSUPPORTEDIMAGEFORMATS       __clewGetSupportedImageFormats      ;
@@ -2378,10 +2426,10 @@ CLEW_FUN_EXPORT     PFNCLRELEASESAMPLER                 __clewReleaseSampler    
 CLEW_FUN_EXPORT     PFNCLGETSAMPLERINFO                 __clewGetSamplerInfo                ;
 CLEW_FUN_EXPORT     PFNCLCREATEPROGRAMWITHSOURCE        __clewCreateProgramWithSource       ;
 CLEW_FUN_EXPORT     PFNCLCREATEPROGRAMWITHBINARY        __clewCreateProgramWithBinary       ;
+CLEW_FUN_EXPORT     PFNCLCREATEPROGRAMWITHBUILTINKERNELS __clewCreateProgramWithBuiltInKernels;
 CLEW_FUN_EXPORT     PFNCLRETAINPROGRAM                  __clewRetainProgram                 ;
 CLEW_FUN_EXPORT     PFNCLRELEASEPROGRAM                 __clewReleaseProgram                ;
 CLEW_FUN_EXPORT     PFNCLBUILDPROGRAM                   __clewBuildProgram                  ;
-CLEW_FUN_EXPORT     PFNCLUNLOADCOMPILER                 __clewUnloadCompiler                ;
 CLEW_FUN_EXPORT     PFNCLGETPROGRAMINFO                 __clewGetProgramInfo                ;
 CLEW_FUN_EXPORT     PFNCLGETPROGRAMBUILDINFO            __clewGetProgramBuildInfo           ;
 CLEW_FUN_EXPORT     PFNCLCREATEKERNEL                   __clewCreateKernel                  ;
@@ -2418,12 +2466,21 @@ CLEW_FUN_EXPORT     PFNCLENQUEUEUNMAPMEMOBJECT          __clewEnqueueUnmapMemObj
 CLEW_FUN_EXPORT     PFNCLENQUEUENDRANGEKERNEL           __clewEnqueueNDRangeKernel          ;
 CLEW_FUN_EXPORT     PFNCLENQUEUETASK                    __clewEnqueueTask                   ;
 CLEW_FUN_EXPORT     PFNCLENQUEUENATIVEKERNEL            __clewEnqueueNativeKernel           ;
+CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensionFunctionAddressForPlatform;
+
+#ifdef CL_USE_DEPRECATED_OPENCL_1_0_APIS
+CLEW_FUN_EXPORT     PFNCLSETCOMMANDQUEUEPROPERTY        __clewSetCommandQueueProperty       ;
+#endif
+
+#ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+CLEW_FUN_EXPORT     PFNCLCREATEIMAGE2D                  __clewCreateImage2D                 ;
+CLEW_FUN_EXPORT     PFNCLCREATEIMAGE3D                  __clewCreateImage3D                 ;
+CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESS    __clewGetExtensionFunctionAddress   ;
+CLEW_FUN_EXPORT     PFNCLUNLOADCOMPILER                 __clewUnloadCompiler                ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEMARKER                  __clewEnqueueMarker                 ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEWAITFOREVENTS           __clewEnqueueWaitForEvents          ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEBARRIER                 __clewEnqueueBarrier                ;
-CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESS    __clewGetExtensionFunctionAddress   ;
-CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensionFunctionAddressForPlatform;
-
+#endif
 
 #define	clGetPlatformIDs                CLEW_GET_FUN(__clewGetPlatformIDs                )
 #define	clGetPlatformInfo               CLEW_GET_FUN(__clewGetPlatformInfo               )
@@ -2454,8 +2511,7 @@ CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensi
 #endif /* CL_USE_DEPRECATED_OPENCL_1_0_APIS */
 #define	clCreateBuffer                  CLEW_GET_FUN(__clewCreateBuffer                  )
 #define	clCreateSubBuffer               CLEW_GET_FUN(__clewCreateSubBuffer               )
-#define	clCreateImage2D                 CLEW_GET_FUN(__clewCreateImage2D                 )
-#define	clCreateImage3D                 CLEW_GET_FUN(__clewCreateImage3D                 )
+#define	clCreateImage                   CLEW_GET_FUN(__clewCreateImage                   )
 #define	clRetainMemObject               CLEW_GET_FUN(__clewRetainMemObject               )
 #define	clReleaseMemObject              CLEW_GET_FUN(__clewReleaseMemObject              )
 #define	clGetSupportedImageFormats      CLEW_GET_FUN(__clewGetSupportedImageFormats      )
@@ -2468,10 +2524,10 @@ CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensi
 #define	clGetSamplerInfo                CLEW_GET_FUN(__clewGetSamplerInfo                )
 #define	clCreateProgramWithSource       CLEW_GET_FUN(__clewCreateProgramWithSource       )
 #define	clCreateProgramWithBinary       CLEW_GET_FUN(__clewCreateProgramWithBinary       )
+#define clCreateProgramWithBuiltInKernels CLEW_GET_FUN(__clewCreateProgramWithBuiltInKernels)
 #define	clRetainProgram                 CLEW_GET_FUN(__clewRetainProgram                 )
 #define	clReleaseProgram                CLEW_GET_FUN(__clewReleaseProgram                )
 #define	clBuildProgram                  CLEW_GET_FUN(__clewBuildProgram                  )
-#define	clUnloadCompiler                CLEW_GET_FUN(__clewUnloadCompiler                )
 #define	clGetProgramInfo                CLEW_GET_FUN(__clewGetProgramInfo                )
 #define	clGetProgramBuildInfo           CLEW_GET_FUN(__clewGetProgramBuildInfo           )
 #define	clCreateKernel                  CLEW_GET_FUN(__clewCreateKernel                  )
@@ -2508,11 +2564,18 @@ CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensi
 #define	clEnqueueNDRangeKernel          CLEW_GET_FUN(__clewEnqueueNDRangeKernel          )
 #define	clEnqueueTask                   CLEW_GET_FUN(__clewEnqueueTask                   )
 #define	clEnqueueNativeKernel           CLEW_GET_FUN(__clewEnqueueNativeKernel           )
+
+#define clGetExtensionFunctionAddressForPlatform CLEW_GET_FUN(__clewGetExtensionFunctionAddressForPlatform)
+
+#ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+#define	clCreateImage2D                 CLEW_GET_FUN(__clewCreateImage2D                 )
+#define	clCreateImage3D                 CLEW_GET_FUN(__clewCreateImage3D                 )
+#define	clGetExtensionFunctionAddress   CLEW_GET_FUN(__clewGetExtensionFunctionAddress   )
 #define	clEnqueueMarker                 CLEW_GET_FUN(__clewEnqueueMarker                 )
 #define	clEnqueueWaitForEvents          CLEW_GET_FUN(__clewEnqueueWaitForEvents          )
 #define	clEnqueueBarrier                CLEW_GET_FUN(__clewEnqueueBarrier                )
-#define	clGetExtensionFunctionAddress   CLEW_GET_FUN(__clewGetExtensionFunctionAddress   )
-#define clGetExtensionFunctionAddressForPlatform CLEW_GET_FUN(__clewGetExtensionFunctionAddressForPlatform)
+#define	clUnloadCompiler                CLEW_GET_FUN(__clewUnloadCompiler                )
+#endif
 
 #define CLEW_SUCCESS                0       //!<    Success error code
 #define CLEW_ERROR_OPEN_FAILED      -1      //!<    Error code for failing to open the dynamic library
