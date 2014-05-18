@@ -2373,6 +2373,132 @@ typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED void * (CL_API_CALL *
 PFNCLGETEXTENSIONFUNCTIONADDRESS)(const char * /* func_name */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 #endif
 
+
+/* cl_gl */
+
+typedef cl_uint     cl_gl_object_type;
+typedef cl_uint     cl_gl_texture_info;
+typedef cl_uint     cl_gl_platform_info;
+typedef struct __GLsync *cl_GLsync;
+
+/* cl_gl_object_type = 0x2000 - 0x200F enum values are currently taken           */
+#define CL_GL_OBJECT_BUFFER                     0x2000
+#define CL_GL_OBJECT_TEXTURE2D                  0x2001
+#define CL_GL_OBJECT_TEXTURE3D                  0x2002
+#define CL_GL_OBJECT_RENDERBUFFER               0x2003
+#define CL_GL_OBJECT_TEXTURE2D_ARRAY            0x200E
+#define CL_GL_OBJECT_TEXTURE1D                  0x200F
+#define CL_GL_OBJECT_TEXTURE1D_ARRAY            0x2010
+#define CL_GL_OBJECT_TEXTURE_BUFFER             0x2011
+
+/* cl_gl_texture_info           */
+#define CL_GL_TEXTURE_TARGET                    0x2004
+#define CL_GL_MIPMAP_LEVEL                      0x2005
+#define CL_GL_NUM_SAMPLES                       0x2012
+
+
+typedef CL_API_ENTRY cl_mem (CL_API_CALL *
+PFNCLCREATEFROMGLBUFFER)(cl_context     /* context */,
+                   cl_mem_flags   /* flags */,
+                   cl_GLuint      /* bufobj */,
+                   int *          /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
+
+typedef CL_API_ENTRY cl_mem (CL_API_CALL *
+PFNCLCREATEFROMGLTEXTURE)(cl_context      /* context */,
+                    cl_mem_flags    /* flags */,
+                    cl_GLenum       /* target */,
+                    cl_GLint        /* miplevel */,
+                    cl_GLuint       /* texture */,
+                    cl_int *        /* errcode_ret */) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_mem (CL_API_CALL *
+PFNCLCREATEFROMGLRENDERBUFFER)(cl_context   /* context */,
+                         cl_mem_flags /* flags */,
+                         cl_GLuint    /* renderbuffer */,
+                         cl_int *     /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *
+PFNCLGETGLOBJECTINFO)(cl_mem                /* memobj */,
+                cl_gl_object_type *   /* gl_object_type */,
+                cl_GLuint *           /* gl_object_name */) CL_API_SUFFIX__VERSION_1_0;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *
+PFNCLGETGLTEXTUREINFO)(cl_mem               /* memobj */,
+                 cl_gl_texture_info   /* param_name */,
+                 size_t               /* param_value_size */,
+                 void *               /* param_value */,
+                 size_t *             /* param_value_size_ret */) CL_API_SUFFIX__VERSION_1_0;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *
+PFNCLENQUEUEACQUIREGLOBJECTS)(cl_command_queue      /* command_queue */,
+                        cl_uint               /* num_objects */,
+                        const cl_mem *        /* mem_objects */,
+                        cl_uint               /* num_events_in_wait_list */,
+                        const cl_event *      /* event_wait_list */,
+                        cl_event *            /* event */) CL_API_SUFFIX__VERSION_1_0;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *
+PFNCLENQUEUERELEASEGLOBJECTS)(cl_command_queue      /* command_queue */,
+                        cl_uint               /* num_objects */,
+                        const cl_mem *        /* mem_objects */,
+                        cl_uint               /* num_events_in_wait_list */,
+                        const cl_event *      /* event_wait_list */,
+                        cl_event *            /* event */) CL_API_SUFFIX__VERSION_1_0;
+
+
+// Deprecated OpenCL 1.1 APIs
+#ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_mem (CL_API_CALL *
+PFNCLCREATEFROMGLTEXTURE2D)(cl_context      /* context */,
+                      cl_mem_flags    /* flags */,
+                      cl_GLenum       /* target */,
+                      cl_GLint        /* miplevel */,
+                      cl_GLuint       /* texture */,
+                      cl_int *        /* errcode_ret */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
+
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_mem (CL_API_CALL *
+PFNCLCREATEFROMGLTEXTURE3D)(cl_context      /* context */,
+                      cl_mem_flags    /* flags */,
+                      cl_GLenum       /* target */,
+                      cl_GLint        /* miplevel */,
+                      cl_GLuint       /* texture */,
+                      cl_int *        /* errcode_ret */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
+#endif
+
+/* cl_khr_gl_sharing extension  */
+
+#define cl_khr_gl_sharing 1
+
+typedef cl_uint     cl_gl_context_info;
+
+/* Additional Error Codes  */
+#define CL_INVALID_GL_SHAREGROUP_REFERENCE_KHR  -1000
+
+/* cl_gl_context_info  */
+#define CL_CURRENT_DEVICE_FOR_GL_CONTEXT_KHR    0x2006
+#define CL_DEVICES_FOR_GL_CONTEXT_KHR           0x2007
+
+/* Additional cl_context_properties  */
+#define CL_GL_CONTEXT_KHR                       0x2008
+#define CL_EGL_DISPLAY_KHR                      0x2009
+#define CL_GLX_DISPLAY_KHR                      0x200A
+#define CL_WGL_HDC_KHR                          0x200B
+#define CL_CGL_SHAREGROUP_KHR                   0x200C
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *
+PFNCLGETGLCONTEXTINFOKHR)(const cl_context_properties * /* properties */,
+                    cl_gl_context_info            /* param_name */,
+                    size_t                        /* param_value_size */,
+                    void *                        /* param_value */,
+                    size_t *                      /* param_value_size_ret */) CL_API_SUFFIX__VERSION_1_0;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *clGetGLContextInfoKHR_fn)(
+  const cl_context_properties * properties,
+  cl_gl_context_info            param_name,
+  size_t                        param_value_size,
+  void *                        param_value,
+  size_t *                      param_value_size_ret);
+
 #define CLEW_STATIC
 
 #ifdef CLEW_STATIC
@@ -2481,6 +2607,20 @@ CLEW_FUN_EXPORT     PFNCLENQUEUEMARKER                  __clewEnqueueMarker     
 CLEW_FUN_EXPORT     PFNCLENQUEUEWAITFOREVENTS           __clewEnqueueWaitForEvents          ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEBARRIER                 __clewEnqueueBarrier                ;
 #endif
+
+/* cl_gl */
+CLEW_FUN_EXPORT     PFNCLCREATEFROMGLBUFFER             __clewCreateFromGLBuffer            ;
+CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE            __clewCreateFromGLTexture           ;
+CLEW_FUN_EXPORT     PFNCLCREATEFROMGLRENDERBUFFER       __clewCreateFromGLRenderbuffer      ;
+CLEW_FUN_EXPORT     PFNCLGETGLOBJECTINFO                __clewGetGLObjectInfo               ;
+CLEW_FUN_EXPORT     PFNCLGETGLTEXTUREINFO               __clGetGLTextureInfo                ;
+CLEW_FUN_EXPORT     PFNCLENQUEUEACQUIREGLOBJECTS        __clewEnqueueAcquireGLObjects       ;
+CLEW_FUN_EXPORT     PFNCLENQUEUERELEASEGLOBJECTS        __clewEnqueueReleaseGLObjects       ;
+#ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE2D          __clewCreateFromGLTexture2D         ;
+CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE3D          __clewCreateFromGLTexture3D         ;
+#endif
+CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clGetGLContextInfoKHR             ;
 
 #define	clGetPlatformIDs                CLEW_GET_FUN(__clewGetPlatformIDs                )
 #define	clGetPlatformInfo               CLEW_GET_FUN(__clewGetPlatformInfo               )
