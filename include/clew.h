@@ -1263,6 +1263,8 @@ typedef cl_uint             cl_device_mem_cache_type;
 typedef cl_uint             cl_device_local_mem_type;
 typedef cl_bitfield         cl_device_exec_capabilities;
 typedef cl_bitfield         cl_command_queue_properties;
+typedef intptr_t            cl_device_partition_property;
+typedef cl_bitfield         cl_device_affinity_domain;
 
 typedef intptr_t			cl_context_properties;
 typedef cl_uint             cl_context_info;
@@ -1292,6 +1294,18 @@ typedef struct _cl_image_format {
     cl_channel_type         image_channel_data_type;
 } cl_image_format;
 
+typedef struct _cl_image_desc {
+       cl_mem_object_type      image_type;
+       size_t                  image_width;
+       size_t                  image_height;
+       size_t                  image_depth;
+       size_t                  image_array_size;
+       size_t                  image_row_pitch;
+       size_t                  image_slice_pitch;
+       cl_uint                 num_mip_levels;
+       cl_uint                 num_samples;
+       cl_mem                  buffer;
+   } cl_image_desc;
 
 typedef struct _cl_buffer_region {
     size_t                  origin;
@@ -1316,6 +1330,11 @@ typedef struct _cl_buffer_region {
 #define CL_MAP_FAILURE                              -12
 #define CL_MISALIGNED_SUB_BUFFER_OFFSET             -13
 #define CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST -14
+#define CL_COMPILE_PROGRAM_FAILURE                  -15
+#define CL_LINKER_NOT_AVAILABLE                     -16
+#define CL_LINK_PROGRAM_FAILURE                     -17
+#define CL_DEVICE_PARTITION_FAILED                  -18
+#define CL_KERNEL_ARG_INFO_NOT_AVAILABLE            -19
 
 #define CL_INVALID_VALUE                            -30
 #define CL_INVALID_DEVICE_TYPE                      -31
@@ -1352,14 +1371,21 @@ typedef struct _cl_buffer_region {
 #define CL_INVALID_MIP_LEVEL                        -62
 #define CL_INVALID_GLOBAL_WORK_SIZE                 -63
 #define CL_INVALID_PROPERTY                         -64
+#define CL_INVALID_IMAGE_DESCRIPTOR                 -65
+#define CL_INVALID_COMPILER_OPTIONS                 -66
+#define CL_INVALID_LINKER_OPTIONS                   -67
+#define CL_INVALID_DEVICE_PARTITION_COUNT           -68
 
 /* OpenCL Version */
 #define CL_VERSION_1_0                              1
 #define CL_VERSION_1_1                              1
+#define CL_VERSION_1_2                              1
 
 /* cl_bool */
 #define CL_FALSE                                    0
 #define CL_TRUE                                     1
+#define CL_BLOCKING                                 CL_TRUE
+#define CL_NON_BLOCKING                             CL_FALSE
 
 /* cl_platform_info */
 #define CL_PLATFORM_PROFILE                         0x0900
@@ -1373,6 +1399,7 @@ typedef struct _cl_buffer_region {
 #define CL_DEVICE_TYPE_CPU                          (1 << 1)
 #define CL_DEVICE_TYPE_GPU                          (1 << 2)
 #define CL_DEVICE_TYPE_ACCELERATOR                  (1 << 3)
+#define CL_DEVICE_TYPE_CUSTOM                       (1 << 4)
 #define CL_DEVICE_TYPE_ALL                          0xFFFFFFFF
 
 /* cl_device_info */
@@ -1426,7 +1453,7 @@ typedef struct _cl_buffer_region {
 #define CL_DEVICE_VERSION                           0x102F
 #define CL_DEVICE_EXTENSIONS                        0x1030
 #define CL_DEVICE_PLATFORM                          0x1031
-/* 0x1032 reserved for CL_DEVICE_DOUBLE_FP_CONFIG */
+#define CL_DEVICE_DOUBLE_FP_CONFIG                  0x1032
 /* 0x1033 reserved for CL_DEVICE_HALF_FP_CONFIG */
 #define CL_DEVICE_PREFERRED_VECTOR_WIDTH_HALF       0x1034
 #define CL_DEVICE_HOST_UNIFIED_MEMORY               0x1035
@@ -1438,6 +1465,20 @@ typedef struct _cl_buffer_region {
 #define CL_DEVICE_NATIVE_VECTOR_WIDTH_DOUBLE        0x103B
 #define CL_DEVICE_NATIVE_VECTOR_WIDTH_HALF          0x103C
 #define CL_DEVICE_OPENCL_C_VERSION                  0x103D
+#define CL_DEVICE_LINKER_AVAILABLE                  0x103E
+#define CL_DEVICE_BUILT_IN_KERNELS                  0x103F
+#define CL_DEVICE_IMAGE_MAX_BUFFER_SIZE             0x1040
+#define CL_DEVICE_IMAGE_MAX_ARRAY_SIZE              0x1041
+#define CL_DEVICE_PARENT_DEVICE                     0x1042
+#define CL_DEVICE_PARTITION_MAX_SUB_DEVICES         0x1043
+#define CL_DEVICE_PARTITION_PROPERTIES              0x1044
+#define CL_DEVICE_PARTITION_AFFINITY_DOMAIN         0x1045
+#define CL_DEVICE_PARTITION_TYPE                    0x1046
+#define CL_DEVICE_REFERENCE_COUNT                   0x1047
+#define CL_DEVICE_PREFERRED_INTEROP_USER_SYNC       0x1048
+#define CL_DEVICE_PRINTF_BUFFER_SIZE                0x1049
+#define CL_DEVICE_IMAGE_PITCH_ALIGNMENT             0x104A
+#define CL_DEVICE_IMAGE_BASE_ADDRESS_ALIGNMENT      0x104B
 
 /* cl_device_fp_config - bitfield */
 #define CL_FP_DENORM                                (1 << 0)
@@ -1447,6 +1488,7 @@ typedef struct _cl_buffer_region {
 #define CL_FP_ROUND_TO_INF                          (1 << 4)
 #define CL_FP_FMA                                   (1 << 5)
 #define CL_FP_SOFT_FLOAT                            (1 << 6)
+#define CL_FP_CORRECTLY_ROUNDED_DIVIDE_SQRT         (1 << 7)
 
 /* cl_device_mem_cache_type */
 #define CL_NONE                                     0x0
@@ -1473,6 +1515,21 @@ typedef struct _cl_buffer_region {
 
 /* cl_context_info + cl_context_properties */
 #define CL_CONTEXT_PLATFORM                         0x1084
+#define CL_CONTEXT_INTEROP_USER_SYNC                0x1085
+
+/* cl_device_partition_property */
+#define CL_DEVICE_PARTITION_EQUALLY                 0x1086
+#define CL_DEVICE_PARTITION_BY_COUNTS               0x1087
+#define CL_DEVICE_PARTITION_BY_COUNTS_LIST_END      0x0
+#define CL_DEVICE_PARTITION_BY_AFFINITY_DOMAIN      0x1088
+
+/* cl_device_affinity_domain */
+#define CL_DEVICE_AFFINITY_DOMAIN_NUMA                     (1 << 0)
+#define CL_DEVICE_AFFINITY_DOMAIN_L4_CACHE                 (1 << 1)
+#define CL_DEVICE_AFFINITY_DOMAIN_L3_CACHE                 (1 << 2)
+#define CL_DEVICE_AFFINITY_DOMAIN_L2_CACHE                 (1 << 3)
+#define CL_DEVICE_AFFINITY_DOMAIN_L1_CACHE                 (1 << 4)
+#define CL_DEVICE_AFFINITY_DOMAIN_NEXT_PARTITIONABLE       (1 << 5)
 
 /* cl_command_queue_info */
 #define CL_QUEUE_CONTEXT                            0x1090
@@ -1487,6 +1544,14 @@ typedef struct _cl_buffer_region {
 #define CL_MEM_USE_HOST_PTR                         (1 << 3)
 #define CL_MEM_ALLOC_HOST_PTR                       (1 << 4)
 #define CL_MEM_COPY_HOST_PTR                        (1 << 5)
+// reserved                                         (1 << 6)
+#define CL_MEM_HOST_WRITE_ONLY                      (1 << 7)
+#define CL_MEM_HOST_READ_ONLY                       (1 << 8)
+#define CL_MEM_HOST_NO_ACCESS                       (1 << 9)
+
+/* cl_mem_migration_flags - bitfield */
+#define CL_MIGRATE_MEM_OBJECT_HOST                  (1 << 0)
+#define CL_MIGRATE_MEM_OBJECT_CONTENT_UNDEFINED     (1 << 1)
 
 /* cl_channel_order */
 #define CL_R                                        0x10B0

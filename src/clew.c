@@ -265,14 +265,13 @@ const char* clewErrorString(cl_int error)
         , "CL_IMAGE_FORMAT_NOT_SUPPORTED"               //  -10
         , "CL_BUILD_PROGRAM_FAILURE"                    //  -11
         , "CL_MAP_FAILURE"                              //  -12
-
-        , ""    //  -13
-        , ""    //  -14
-        , ""    //  -15
-        , ""    //  -16
-        , ""    //  -17
-        , ""    //  -18
-        , ""    //  -19
+        , "CL_MISALIGNED_SUB_BUFFER_OFFSET"             //  -13
+        , "CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST"//  -14
+        , "CL_COMPILE_PROGRAM_FAILURE"                  //  -15
+        , "CL_LINKER_NOT_AVAILABLE"                     //  -16
+        , "CL_LINK_PROGRAM_FAILURE"                     //  -17
+        , "CL_DEVICE_PARTITION_FAILED"                  //  -18
+        , "CL_KERNEL_ARG_INFO_NOT_AVAILABLE"            //  -19
 
         , ""    //  -20
         , ""    //  -21
@@ -319,6 +318,11 @@ const char* clewErrorString(cl_int error)
         , "CL_INVALID_BUFFER_SIZE"                      //  -61
         , "CL_INVALID_MIP_LEVEL"                        //  -62
         , "CL_INVALID_GLOBAL_WORK_SIZE"                 //  -63
+        , "CL_INVALID_PROPERTY"                         //  -64
+        , "CL_INVALID_IMAGE_DESCRIPTOR"                 //  -65
+        , "CL_INVALID_COMPILER_OPTIONS"                 //  -66
+        , "CL_INVALID_LINKER_OPTIONS"                   //  -67
+        , "CL_INVALID_DEVICE_PARTITION_COUNT"           //  -68
     };
 
     return strings[-error];
