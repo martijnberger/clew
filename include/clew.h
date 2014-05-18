@@ -1567,6 +1567,8 @@ typedef struct _cl_buffer_region {
 #define CL_Rx                                       0x10BA
 #define CL_RGx                                      0x10BB
 #define CL_RGBx                                     0x10BC
+#define CL_DEPTH                                    0x10BD
+#define CL_DEPTH_STENCIL                            0x10BE
 
 /* cl_channel_type */
 #define CL_SNORM_INT8                               0x10D0
@@ -1584,11 +1586,16 @@ typedef struct _cl_buffer_region {
 #define CL_UNSIGNED_INT32                           0x10DC
 #define CL_HALF_FLOAT                               0x10DD
 #define CL_FLOAT                                    0x10DE
+#define CL_UNORM_INT24                              0x10DF
 
 /* cl_mem_object_type */
 #define CL_MEM_OBJECT_BUFFER                        0x10F0
 #define CL_MEM_OBJECT_IMAGE2D                       0x10F1
 #define CL_MEM_OBJECT_IMAGE3D                       0x10F2
+#define CL_MEM_OBJECT_IMAGE2D_ARRAY                 0x10F3
+#define CL_MEM_OBJECT_IMAGE1D                       0x10F4
+#define CL_MEM_OBJECT_IMAGE1D_ARRAY                 0x10F5
+#define CL_MEM_OBJECT_IMAGE1D_BUFFER                0x10F6
 
 /* cl_mem_info */
 #define CL_MEM_TYPE                                 0x1100
@@ -1609,6 +1616,10 @@ typedef struct _cl_buffer_region {
 #define CL_IMAGE_WIDTH                              0x1114
 #define CL_IMAGE_HEIGHT                             0x1115
 #define CL_IMAGE_DEPTH                              0x1116
+#define CL_IMAGE_ARRAY_SIZE                         0x1117
+#define CL_IMAGE_BUFFER                             0x1118
+#define CL_IMAGE_NUM_MIP_LEVELS                     0x1119
+#define CL_IMAGE_NUM_SAMPLES                        0x111A
 
 /* cl_addressing_mode */
 #define CL_ADDRESS_NONE                             0x1130
@@ -1631,6 +1642,7 @@ typedef struct _cl_buffer_region {
 /* cl_map_flags - bitfield */
 #define CL_MAP_READ                                 (1 << 0)
 #define CL_MAP_WRITE                                (1 << 1)
+#define CL_MAP_WRITE_INVALIDATE_REGION              (1 << 2)
 
 /* cl_program_info */
 #define CL_PROGRAM_REFERENCE_COUNT                  0x1160
@@ -1640,11 +1652,14 @@ typedef struct _cl_buffer_region {
 #define CL_PROGRAM_SOURCE                           0x1164
 #define CL_PROGRAM_BINARY_SIZES                     0x1165
 #define CL_PROGRAM_BINARIES                         0x1166
+#define CL_PROGRAM_NUM_KERNELS                      0x1167
+#define CL_PROGRAM_KERNEL_NAMES                     0x1168
 
 /* cl_program_build_info */
 #define CL_PROGRAM_BUILD_STATUS                     0x1181
 #define CL_PROGRAM_BUILD_OPTIONS                    0x1182
 #define CL_PROGRAM_BUILD_LOG                        0x1183
+#define CL_PROGRAM_BINARY_TYPE                      0x1184
 
 /* cl_build_status */
 #define CL_BUILD_SUCCESS                            0
@@ -1658,6 +1673,32 @@ typedef struct _cl_buffer_region {
 #define CL_KERNEL_REFERENCE_COUNT                   0x1192
 #define CL_KERNEL_CONTEXT                           0x1193
 #define CL_KERNEL_PROGRAM                           0x1194
+#define CL_KERNEL_ATTRIBUTES                        0x1195
+
+/* cl_kernel_arg_info */
+#define CL_KERNEL_ARG_ADDRESS_QUALIFIER             0x1196
+#define CL_KERNEL_ARG_ACCESS_QUALIFIER              0x1197
+#define CL_KERNEL_ARG_TYPE_NAME                     0x1198
+#define CL_KERNEL_ARG_TYPE_QUALIFIER                0x1199
+#define CL_KERNEL_ARG_NAME                          0x119A
+
+/* cl_kernel_arg_address_qualifier */
+#define CL_KERNEL_ARG_ADDRESS_GLOBAL                0x119B
+#define CL_KERNEL_ARG_ADDRESS_LOCAL                 0x119C
+#define CL_KERNEL_ARG_ADDRESS_CONSTANT              0x119D
+#define CL_KERNEL_ARG_ADDRESS_PRIVATE               0x119E
+
+/* cl_kernel_arg_access_qualifier */
+#define CL_KERNEL_ARG_ACCESS_READ_ONLY              0x11A0
+#define CL_KERNEL_ARG_ACCESS_WRITE_ONLY             0x11A1
+#define CL_KERNEL_ARG_ACCESS_READ_WRITE             0x11A2
+#define CL_KERNEL_ARG_ACCESS_NONE                   0x11A3
+
+/* cl_kernel_arg_type_qualifer */
+#define CL_KERNEL_ARG_TYPE_NONE                     0
+#define CL_KERNEL_ARG_TYPE_CONST                    (1 << 0)
+#define CL_KERNEL_ARG_TYPE_RESTRICT                 (1 << 1)
+#define CL_KERNEL_ARG_TYPE_VOLATILE                 (1 << 2)
 
 /* cl_kernel_work_group_info */
 #define CL_KERNEL_WORK_GROUP_SIZE                   0x11B0
@@ -1665,6 +1706,7 @@ typedef struct _cl_buffer_region {
 #define CL_KERNEL_LOCAL_MEM_SIZE                    0x11B2
 #define CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE 0x11B3
 #define CL_KERNEL_PRIVATE_MEM_SIZE                  0x11B4
+#define CL_KERNEL_GLOBAL_WORK_SIZE                  0x11B5
 
 /* cl_event_info  */
 #define CL_EVENT_COMMAND_QUEUE                      0x11D0
@@ -1695,6 +1737,10 @@ typedef struct _cl_buffer_region {
 #define CL_COMMAND_WRITE_BUFFER_RECT                0x1202
 #define CL_COMMAND_COPY_BUFFER_RECT                 0x1203
 #define CL_COMMAND_USER                             0x1204
+#define CL_COMMAND_BARRIER                          0x1205
+#define CL_COMMAND_MIGRATE_MEM_OBJECTS              0x1206
+#define CL_COMMAND_FILL_BUFFER                      0x1207
+#define CL_COMMAND_FILL_IMAGE                       0x1208
 
 /* command execution status */
 #define CL_COMPLETE                                 0x0
