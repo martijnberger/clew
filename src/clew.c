@@ -113,6 +113,7 @@ PFNCLENQUEUEMARKER                  __clewEnqueueMarker                 = NULL;
 PFNCLENQUEUEWAITFOREVENTS           __clewEnqueueWaitForEvents          = NULL;
 PFNCLENQUEUEBARRIER                 __clewEnqueueBarrier                = NULL;
 PFNCLGETEXTENSIONFUNCTIONADDRESS    __clewGetExtensionFunctionAddress   = NULL;
+PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensionFunctionAddressForPlatform = NULL;
 
 
 static void clewExit(void)
@@ -244,6 +245,7 @@ int clewInit()
     __clewEnqueueWaitForEvents          = (PFNCLENQUEUEWAITFOREVENTS        )CLEW_DYNLIB_IMPORT(module, "clEnqueueWaitForEvents");
     __clewEnqueueBarrier                = (PFNCLENQUEUEBARRIER              )CLEW_DYNLIB_IMPORT(module, "clEnqueueBarrier");
     __clewGetExtensionFunctionAddress   = (PFNCLGETEXTENSIONFUNCTIONADDRESS )CLEW_DYNLIB_IMPORT(module, "clGetExtensionFunctionAddress");
+    __clewGetExtensionFunctionAddressForPlatform = (PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM)CLEW_DYNLIB_IMPORT(module, "clGetExtensionFunctionAddressForPlatform");
 
     if(__clewGetPlatformIDs == NULL) return 0;
     if(__clewGetPlatformInfo == NULL) return 0;

@@ -90,6 +90,7 @@ extern "C" {
     #define CL_EXT_SUFFIX__VERSION_1_2
     #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
     #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED
+    #define CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED
 #endif
 
 #if (defined (_WIN32) && defined(_MSC_VER))
@@ -1877,27 +1878,6 @@ PFNCLCREATESUBBUFFER)(cl_mem   			/* buffer */,
                const void *       		/* buffer_create_info */,
                cl_int *     			/* errcode_ret */) CL_API_SUFFIX__VERSION_1_1;
 
-typedef CL_API_ENTRY cl_mem (CL_API_CALL *
-PFNCLCREATEIMAGE2D)(cl_context              /* context */,
-                cl_mem_flags            /* flags */,
-                const cl_image_format * /* image_format */,
-                size_t                  /* image_width */,
-                size_t                  /* image_height */,
-                size_t                  /* image_row_pitch */, 
-                void *                  /* host_ptr */,
-                cl_int *                /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
-
-typedef CL_API_ENTRY cl_mem (CL_API_CALL *
-PFNCLCREATEIMAGE3D)(cl_context              /* context */,
-                cl_mem_flags            /* flags */,
-                const cl_image_format * /* image_format */,
-                size_t                  /* image_width */, 
-                size_t                  /* image_height */,
-                size_t                  /* image_depth */, 
-                size_t                  /* image_row_pitch */, 
-                size_t                  /* image_slice_pitch */, 
-                void *                  /* host_ptr */,
-                cl_int *                /* errcode_ret */) CL_API_SUFFIX__VERSION_1_0;
 
 typedef CL_API_ENTRY cl_int (CL_API_CALL *
 PFNCLRETAINMEMOBJECT)(cl_mem /* memobj */) CL_API_SUFFIX__VERSION_1_0;
@@ -1983,9 +1963,6 @@ PFNCLBUILDPROGRAM)(cl_program           /* program */,
                const char *         /* options */, 
                void (CL_CALLBACK *  /* pfn_notify */)(cl_program /* program */, void * /* user_data */),
                void *               /* user_data */) CL_API_SUFFIX__VERSION_1_0;
-
-typedef CL_API_ENTRY cl_int (CL_API_CALL *
-PFNCLUNLOADCOMPILER)(void) CL_API_SUFFIX__VERSION_1_0;
 
 typedef CL_API_ENTRY cl_int (CL_API_CALL *
 PFNCLGETPROGRAMINFO)(cl_program         /* program */,
@@ -2292,27 +2269,57 @@ PFNCLENQUEUENATIVEKERNEL)(cl_command_queue  /* command_queue */,
                       const cl_event *  /* event_wait_list */,
                       cl_event *        /* event */) CL_API_SUFFIX__VERSION_1_0;
 
-typedef CL_API_ENTRY cl_int (CL_API_CALL *
+/* Extension function access
+*
+* Returns the extension function address for the given function name,
+* or NULL if a valid function can not be found.  The client must
+* check to make sure the address is not NULL, before using or
+* calling the returned function address.
+*/
+typedef CL_API_ENTRY void * (CL_API_CALL *
+PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM)(cl_platform_id /* platform */,
+                                         const char *   /* func_name */) CL_API_SUFFIX__VERSION_1_2;
+
+// Deprecated OpenCL 1.1 APIs
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_mem (CL_API_CALL *
+PFNCLCREATEIMAGE2D)(cl_context              /* context */,
+               cl_mem_flags            /* flags */,
+               const cl_image_format * /* image_format */,
+               size_t                  /* image_width */,
+               size_t                  /* image_height */,
+               size_t                  /* image_row_pitch */,
+               void *                  /* host_ptr */,
+               cl_int *                /* errcode_ret */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
+
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_mem (CL_API_CALL *
+PFNCLCREATEIMAGE3D)(cl_context              /* context */,
+               cl_mem_flags            /* flags */,
+               const cl_image_format * /* image_format */,
+               size_t                  /* image_width */,
+               size_t                  /* image_height */,
+               size_t                  /* image_depth */,
+               size_t                  /* image_row_pitch */,
+               size_t                  /* image_slice_pitch */,
+               void *                  /* host_ptr */,
+               cl_int *                /* errcode_ret */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
+
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_int (CL_API_CALL *
 PFNCLENQUEUEMARKER)(cl_command_queue    /* command_queue */,
-                cl_event *          /* event */) CL_API_SUFFIX__VERSION_1_0;
+               cl_event *          /* event */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
-typedef CL_API_ENTRY cl_int (CL_API_CALL *
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_int (CL_API_CALL *
 PFNCLENQUEUEWAITFOREVENTS)(cl_command_queue /* command_queue */,
-                       cl_uint          /* num_events */,
-                       const cl_event * /* event_list */) CL_API_SUFFIX__VERSION_1_0;
+                      cl_uint          /* num_events */,
+                      const cl_event * /* event_list */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
-typedef CL_API_ENTRY cl_int (CL_API_CALL *
-PFNCLENQUEUEBARRIER)(cl_command_queue /* command_queue */) CL_API_SUFFIX__VERSION_1_0;
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_int (CL_API_CALL *
+PFNCLENQUEUEBARRIER)(cl_command_queue /* command_queue */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
-// Extension function access
-//
-// Returns the extension function address for the given function name,
-// or NULL if a valid function can not be found.  The client must
-// check to make sure the address is not NULL, before using or 
-// calling the returned function address.
-//
-typedef CL_API_ENTRY void * (CL_API_CALL * PFNCLGETEXTENSIONFUNCTIONADDRESS)(const char * /* func_name */) CL_API_SUFFIX__VERSION_1_0;
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED cl_int (CL_API_CALL *
+PFNCLUNLOADCOMPILER)(void) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
+typedef CL_API_ENTRY CL_EXT_PREFIX__VERSION_1_1_DEPRECATED void * (CL_API_CALL *
+PFNCLGETEXTENSIONFUNCTIONADDRESS)(const char * /* func_name */) CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED;
 
 #define CLEW_STATIC
 
@@ -2415,6 +2422,7 @@ CLEW_FUN_EXPORT     PFNCLENQUEUEMARKER                  __clewEnqueueMarker     
 CLEW_FUN_EXPORT     PFNCLENQUEUEWAITFOREVENTS           __clewEnqueueWaitForEvents          ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEBARRIER                 __clewEnqueueBarrier                ;
 CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESS    __clewGetExtensionFunctionAddress   ;
+CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensionFunctionAddressForPlatform;
 
 
 #define	clGetPlatformIDs                CLEW_GET_FUN(__clewGetPlatformIDs                )
@@ -2504,7 +2512,7 @@ CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESS    __clewGetExtensionFuncti
 #define	clEnqueueWaitForEvents          CLEW_GET_FUN(__clewEnqueueWaitForEvents          )
 #define	clEnqueueBarrier                CLEW_GET_FUN(__clewEnqueueBarrier                )
 #define	clGetExtensionFunctionAddress   CLEW_GET_FUN(__clewGetExtensionFunctionAddress   )
-
+#define clGetExtensionFunctionAddressForPlatform CLEW_GET_FUN(__clewGetExtensionFunctionAddressForPlatform)
 
 #define CLEW_SUCCESS                0       //!<    Success error code
 #define CLEW_ERROR_OPEN_FAILED      -1      //!<    Error code for failing to open the dynamic library
