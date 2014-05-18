@@ -2381,7 +2381,7 @@ CLEW_FUN_EXPORT     PFNCLGETEXTENSIONFUNCTIONADDRESS    __clewGetExtensionFuncti
 #define CLEW_ERROR_ATEXIT_FAILED    -2      //!<    Error code for failing to queue the closing of the dynamic library to atexit()
 
 //! \brief Load OpenCL dynamic library and set function entry points
-int         clewInit        (const wchar_t*);
+int         clewInit        (const char*);
 //! \brief Convert an OpenCL error code to its string equivalent
 const char* clewErrorString (cl_int error);
 

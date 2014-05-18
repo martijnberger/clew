@@ -1,13 +1,11 @@
 // clewTest.cpp : Defines the entry point for the console application.
 //
 
-#include <tchar.h>
 #include "clew.h"
 
-
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
-	clewInit(L"opencl.dll");
+	clewInit("opencl.dll");
 	return 0;
 }
 

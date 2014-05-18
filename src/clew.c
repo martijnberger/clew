@@ -122,7 +122,7 @@ static void clewExit(void)
     }
 }
 
-int clewInit(const wchar_t* path)
+int clewInit(const char* path)
 {
     int error = 0;
 
