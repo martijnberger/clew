@@ -86,7 +86,10 @@ extern "C" {
     #define CL_EXT_SUFFIX__VERSION_1_0
     #define CL_API_SUFFIX__VERSION_1_1
     #define CL_EXT_SUFFIX__VERSION_1_1
+    #define CL_API_SUFFIX__VERSION_1_2
+    #define CL_EXT_SUFFIX__VERSION_1_2
     #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
+    #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED
 #endif
 
 #if (defined (_WIN32) && defined(_MSC_VER))
@@ -1791,6 +1794,19 @@ PFNCLGETDEVICEINFO)(cl_device_id    /* device */,
                 void *          /* param_value */,
                 size_t *        /* param_value_size_ret */) CL_API_SUFFIX__VERSION_1_0;
 
+typedef CL_API_ENTRY cl_int (CL_API_CALL *
+PFNCLCREATESUBDEVICES)(cl_device_id                         /* in_device */,
+                  const cl_device_partition_property * /* properties */,
+                  cl_uint                              /* num_devices */,
+                  cl_device_id *                       /* out_devices */,
+                  cl_uint *                            /* num_devices_ret */) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *
+PFNCLRETAINDEVICE)(cl_device_id /* device */) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *
+PFNCLRELEASEDEVICE)(cl_device_id /* device */) CL_API_SUFFIX__VERSION_1_2;
+
 // Context APIs  
 typedef CL_API_ENTRY cl_context (CL_API_CALL *
 PFNCLCREATECONTEXT)(const cl_context_properties * /* properties */,
@@ -2324,6 +2340,9 @@ CLEW_FUN_EXPORT     PFNCLGETPLATFORMIDS                 __clewGetPlatformIDs    
 CLEW_FUN_EXPORT     PFNCLGETPLATFORMINFO                __clewGetPlatformInfo               ;
 CLEW_FUN_EXPORT     PFNCLGETDEVICEIDS                   __clewGetDeviceIDs                  ;
 CLEW_FUN_EXPORT     PFNCLGETDEVICEINFO                  __clewGetDeviceInfo                 ;
+CLEW_FUN_EXPORT     PFNCLCREATESUBDEVICES               __clewCreateSubDevices              ;
+CLEW_FUN_EXPORT     PFNCLRETAINDEVICE                   __clewRetainDevice                  ;
+CLEW_FUN_EXPORT     PFNCLRELEASEDEVICE                  __clewReleaseDevice                 ;
 CLEW_FUN_EXPORT     PFNCLCREATECONTEXT                  __clewCreateContext                 ;
 CLEW_FUN_EXPORT     PFNCLCREATECONTEXTFROMTYPE          __clewCreateContextFromType         ;
 CLEW_FUN_EXPORT     PFNCLRETAINCONTEXT                  __clewRetainContext                 ;
