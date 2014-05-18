@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[])
 {
-	clewInit("opencl.dll");
+	clewInit();
 	return 0;
 }
 

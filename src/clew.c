@@ -122,8 +122,16 @@ static void clewExit(void)
     }
 }
 
-int clewInit(const char* path)
+int clewInit()
 {
+#ifdef _WIN32
+    const char *path = "OpenCL.dll";
+#elif defined(__APPLE__)
+    const char *path = "/Library/Frameworks/OpenCL.framework/OpenCL";
+#else
+    const char *path = "libOpenCL.so";
+#endif
+
     int error = 0;
 
     //  Check if already initialized
@@ -230,6 +238,11 @@ int clewInit(const char* path)
     __clewEnqueueWaitForEvents          = (PFNCLENQUEUEWAITFOREVENTS        )CLEW_DYNLIB_IMPORT(module, "clEnqueueWaitForEvents");
     __clewEnqueueBarrier                = (PFNCLENQUEUEBARRIER              )CLEW_DYNLIB_IMPORT(module, "clEnqueueBarrier");
     __clewGetExtensionFunctionAddress   = (PFNCLGETEXTENSIONFUNCTIONADDRESS )CLEW_DYNLIB_IMPORT(module, "clGetExtensionFunctionAddress");
+
+    if(__clewGetPlatformIDs == NULL) return 0;
+    if(__clewGetPlatformInfo == NULL) return 0;
+    if(__clewGetDeviceIDs == NULL) return 0;
+    if(__clewGetDeviceInfo == NULL) return 0;
 
     return CLEW_SUCCESS;
 }
