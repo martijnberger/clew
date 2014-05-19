@@ -1,4 +1,4 @@
-project(bmd_toolchain)
+project(clew)
 
 cmake_minimum_required (VERSION 2.6)
 if (NOT CMAKE_VERSION VERSION_LESS 2.8.4)
