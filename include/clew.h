@@ -2620,7 +2620,7 @@ CLEW_FUN_EXPORT     PFNCLENQUEUERELEASEGLOBJECTS        __clewEnqueueReleaseGLOb
 CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE2D          __clewCreateFromGLTexture2D         ;
 CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE3D          __clewCreateFromGLTexture3D         ;
 #endif
-CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clGetGLContextInfoKHR             ;
+CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clewGetGLContextInfoKHR           ;
 
 #define	clGetPlatformIDs                CLEW_GET_FUN(__clewGetPlatformIDs                )
 #define	clGetPlatformInfo               CLEW_GET_FUN(__clewGetPlatformInfo               )
