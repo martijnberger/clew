@@ -128,7 +128,7 @@ PFNCLCREATEFROMGLBUFFER             __clewCreateFromGLBuffer            = NULL;
 PFNCLCREATEFROMGLTEXTURE            __clewCreateFromGLTexture           = NULL;
 PFNCLCREATEFROMGLRENDERBUFFER       __clewCreateFromGLRenderbuffer      = NULL;
 PFNCLGETGLOBJECTINFO                __clewGetGLObjectInfo               = NULL;
-PFNCLGETGLTEXTUREINFO               __clGetGLTextureInfo                = NULL;
+PFNCLGETGLTEXTUREINFO               __clewGetGLTextureInfo              = NULL;
 PFNCLENQUEUEACQUIREGLOBJECTS        __clewEnqueueAcquireGLObjects       = NULL;
 PFNCLENQUEUERELEASEGLOBJECTS        __clewEnqueueReleaseGLObjects       = NULL;
 #ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
@@ -282,7 +282,7 @@ int clewInit()
     __clewCreateFromGLTexture           = (PFNCLCREATEFROMGLTEXTURE         )CLEW_DYNLIB_IMPORT(module, "clCreateFromGLTexture");
     __clewCreateFromGLRenderbuffer      = (PFNCLCREATEFROMGLRENDERBUFFER    )CLEW_DYNLIB_IMPORT(module, "clCreateFromGLRenderbuffer");
     __clewGetGLObjectInfo               = (PFNCLGETGLOBJECTINFO             )CLEW_DYNLIB_IMPORT(module, "clGetGLObjectInfo");
-    __clGetGLTextureInfo                = (PFNCLGETGLTEXTUREINFO            )CLEW_DYNLIB_IMPORT(module, "clGetGLTextureInfo");
+    __clewGetGLTextureInfo              = (PFNCLGETGLTEXTUREINFO            )CLEW_DYNLIB_IMPORT(module, "clGetGLTextureInfo");
     __clewEnqueueAcquireGLObjects       = (PFNCLENQUEUEACQUIREGLOBJECTS     )CLEW_DYNLIB_IMPORT(module, "clEnqueueAcquireGLObjects");
     __clewEnqueueReleaseGLObjects       = (PFNCLENQUEUERELEASEGLOBJECTS     )CLEW_DYNLIB_IMPORT(module, "clEnqueueReleaseGLObjects");
     #ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS

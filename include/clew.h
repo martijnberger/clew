@@ -2613,7 +2613,7 @@ CLEW_FUN_EXPORT     PFNCLCREATEFROMGLBUFFER             __clewCreateFromGLBuffer
 CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE            __clewCreateFromGLTexture           ;
 CLEW_FUN_EXPORT     PFNCLCREATEFROMGLRENDERBUFFER       __clewCreateFromGLRenderbuffer      ;
 CLEW_FUN_EXPORT     PFNCLGETGLOBJECTINFO                __clewGetGLObjectInfo               ;
-CLEW_FUN_EXPORT     PFNCLGETGLTEXTUREINFO               __clGetGLTextureInfo                ;
+CLEW_FUN_EXPORT     PFNCLGETGLTEXTUREINFO               __clewGetGLTextureInfo              ;
 CLEW_FUN_EXPORT     PFNCLENQUEUEACQUIREGLOBJECTS        __clewEnqueueAcquireGLObjects       ;
 CLEW_FUN_EXPORT     PFNCLENQUEUERELEASEGLOBJECTS        __clewEnqueueReleaseGLObjects       ;
 #ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
@@ -2716,6 +2716,21 @@ CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clewGetGLContextInfoKH
 #define	clEnqueueBarrier                CLEW_GET_FUN(__clewEnqueueBarrier                )
 #define	clUnloadCompiler                CLEW_GET_FUN(__clewUnloadCompiler                )
 #endif
+
+/* cl_gl */
+#define	clCreateFromGLBuffer            CLEW_GET_FUN(__clewCreateFromGLBuffer            )
+#define	clCreateFromGLTexture           CLEW_GET_FUN(__clewCreateFromGLTexture           )
+#define	clCreateFromGLRenderbuffer      CLEW_GET_FUN(__clewCreateFromGLRenderbuffer      )
+#define	clGetGLObjectInfo               CLEW_GET_FUN(__clewGetGLObjectInfo               )
+#define	clGetGLTextureInfo              CLEW_GET_FUN(__clGetGLTextureInfo                )
+#define	clEnqueueAcquireGLObjects       CLEW_GET_FUN(__clewEnqueueAcquireGLObjects       )
+#define	clEnqueueReleaseGLObjects       CLEW_GET_FUN(__clewEnqueueReleaseGLObjects       )
+#ifdef CL_USE_DEPRECATED_OPENCL_1_1_APIS
+#define	clCreateFromGLTexture2D         CLEW_GET_FUN(__clewCreateFromGLTexture2D         )
+#define	clCreateFromGLTexture3D         CLEW_GET_FUN(__clewCreateFromGLTexture3D         )
+#endif
+#define	clGetGLContextInfoKHR           CLEW_GET_FUN(__clewGetGLContextInfoKHR           )
+
 
 #define CLEW_SUCCESS                0       //!<    Success error code
 #define CLEW_ERROR_OPEN_FAILED      -1      //!<    Error code for failing to open the dynamic library
