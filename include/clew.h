@@ -89,7 +89,7 @@ extern "C" {
     #define CL_API_SUFFIX__VERSION_1_2
     #define CL_EXT_SUFFIX__VERSION_1_2
 
-    #ifdef __GNUC__
+    #if defined(__GNUC__)
         #ifdef CL_USE_DEPRECATED_OPENCL_1_0_APIS
             #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
             #define CL_EXT_PREFIX__VERSION_1_0_DEPRECATED
@@ -105,7 +105,7 @@ extern "C" {
             #define CL_EXT_SUFFIX__VERSION_1_1_DEPRECATED __attribute__((deprecated))
             #define CL_EXT_PREFIX__VERSION_1_1_DEPRECATED
         #endif
-    #elif _WIN32
+    #elif defined(_WIN32)
         #ifdef CL_USE_DEPRECATED_OPENCL_1_0_APIS
             #define CL_EXT_SUFFIX__VERSION_1_0_DEPRECATED
             #define CL_EXT_PREFIX__VERSION_1_0_DEPRECATED
