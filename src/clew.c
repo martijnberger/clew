@@ -300,83 +300,67 @@ int clewInit()
     return CLEW_SUCCESS;
 }
 
-const char* clewErrorString(cl_int error)
-{
-    static const char* strings[] =
-    {
-        // Error Codes
-          "CL_SUCCESS"                                  //   0
-        , "CL_DEVICE_NOT_FOUND"                         //  -1
-        , "CL_DEVICE_NOT_AVAILABLE"                     //  -2
-        , "CL_COMPILER_NOT_AVAILABLE"                   //  -3
-        , "CL_MEM_OBJECT_ALLOCATION_FAILURE"            //  -4
-        , "CL_OUT_OF_RESOURCES"                         //  -5
-        , "CL_OUT_OF_HOST_MEMORY"                       //  -6
-        , "CL_PROFILING_INFO_NOT_AVAILABLE"             //  -7
-        , "CL_MEM_COPY_OVERLAP"                         //  -8
-        , "CL_IMAGE_FORMAT_MISMATCH"                    //  -9
-        , "CL_IMAGE_FORMAT_NOT_SUPPORTED"               //  -10
-        , "CL_BUILD_PROGRAM_FAILURE"                    //  -11
-        , "CL_MAP_FAILURE"                              //  -12
-        , "CL_MISALIGNED_SUB_BUFFER_OFFSET"             //  -13
-        , "CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST"//  -14
-        , "CL_COMPILE_PROGRAM_FAILURE"                  //  -15
-        , "CL_LINKER_NOT_AVAILABLE"                     //  -16
-        , "CL_LINK_PROGRAM_FAILURE"                     //  -17
-        , "CL_DEVICE_PARTITION_FAILED"                  //  -18
-        , "CL_KERNEL_ARG_INFO_NOT_AVAILABLE"            //  -19
-
-        , ""    //  -20
-        , ""    //  -21
-        , ""    //  -22
-        , ""    //  -23
-        , ""    //  -24
-        , ""    //  -25
-        , ""    //  -26
-        , ""    //  -27
-        , ""    //  -28
-        , ""    //  -29
-
-        , "CL_INVALID_VALUE"                            //  -30
-        , "CL_INVALID_DEVICE_TYPE"                      //  -31
-        , "CL_INVALID_PLATFORM"                         //  -32
-        , "CL_INVALID_DEVICE"                           //  -33
-        , "CL_INVALID_CONTEXT"                          //  -34
-        , "CL_INVALID_QUEUE_PROPERTIES"                 //  -35
-        , "CL_INVALID_COMMAND_QUEUE"                    //  -36
-        , "CL_INVALID_HOST_PTR"                         //  -37
-        , "CL_INVALID_MEM_OBJECT"                       //  -38
-        , "CL_INVALID_IMAGE_FORMAT_DESCRIPTOR"          //  -39
-        , "CL_INVALID_IMAGE_SIZE"                       //  -40
-        , "CL_INVALID_SAMPLER"                          //  -41
-        , "CL_INVALID_BINARY"                           //  -42
-        , "CL_INVALID_BUILD_OPTIONS"                    //  -43
-        , "CL_INVALID_PROGRAM"                          //  -44
-        , "CL_INVALID_PROGRAM_EXECUTABLE"               //  -45
-        , "CL_INVALID_KERNEL_NAME"                      //  -46
-        , "CL_INVALID_KERNEL_DEFINITION"                //  -47
-        , "CL_INVALID_KERNEL"                           //  -48
-        , "CL_INVALID_ARG_INDEX"                        //  -49
-        , "CL_INVALID_ARG_VALUE"                        //  -50
-        , "CL_INVALID_ARG_SIZE"                         //  -51
-        , "CL_INVALID_KERNEL_ARGS"                      //  -52
-        , "CL_INVALID_WORK_DIMENSION"                   //  -53
-        , "CL_INVALID_WORK_GROUP_SIZE"                  //  -54
-        , "CL_INVALID_WORK_ITEM_SIZE"                   //  -55
-        , "CL_INVALID_GLOBAL_OFFSET"                    //  -56
-        , "CL_INVALID_EVENT_WAIT_LIST"                  //  -57
-        , "CL_INVALID_EVENT"                            //  -58
-        , "CL_INVALID_OPERATION"                        //  -59
-        , "CL_INVALID_GL_OBJECT"                        //  -60
-        , "CL_INVALID_BUFFER_SIZE"                      //  -61
-        , "CL_INVALID_MIP_LEVEL"                        //  -62
-        , "CL_INVALID_GLOBAL_WORK_SIZE"                 //  -63
-        , "CL_INVALID_PROPERTY"                         //  -64
-        , "CL_INVALID_IMAGE_DESCRIPTOR"                 //  -65
-        , "CL_INVALID_COMPILER_OPTIONS"                 //  -66
-        , "CL_INVALID_LINKER_OPTIONS"                   //  -67
-        , "CL_INVALID_DEVICE_PARTITION_COUNT"           //  -68
-    };
-
-    return strings[-error];
+const char *clewErrorString(cl_int error) {
+    switch(error) {
+        case CL_SUCCESS: return "Success!";                                                                         //    0
+        case CL_DEVICE_NOT_FOUND: return "Device not found.";                                                       //   -1
+        case CL_DEVICE_NOT_AVAILABLE: return "Device not available";                                                //   -2
+        case CL_COMPILER_NOT_AVAILABLE: return "Compiler not available";                                            //   -3
+        case CL_MEM_OBJECT_ALLOCATION_FAILURE: return "Memory object allocation failure";                           //   -4
+        case CL_OUT_OF_RESOURCES: return "Out of resources";                                                        //   -5
+        case CL_OUT_OF_HOST_MEMORY: return "Out of host memory";                                                    //   -6
+        case CL_PROFILING_INFO_NOT_AVAILABLE: return "Profiling information not available";                         //   -7
+        case CL_MEM_COPY_OVERLAP: return "Memory copy overlap";                                                     //   -8
+        case CL_IMAGE_FORMAT_MISMATCH: return "Image format mismatch";                                              //   -9
+        case CL_IMAGE_FORMAT_NOT_SUPPORTED: return "Image format not supported";                                    //  -10
+        case CL_BUILD_PROGRAM_FAILURE: return "Program build failure";                                              //  -11
+        case CL_MAP_FAILURE: return "Map failure";                                                                  //  -12
+        case CL_MISALIGNED_SUB_BUFFER_OFFSET: return "CL_MISALIGNED_SUB_BUFFER_OFFSET";                             //  -13
+        case CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST: return "CL_EXEC_STATUS_ERROR_FOR_EVENTS_IN_WAIT_LIST";   //  -14
+        case CL_COMPILE_PROGRAM_FAILURE: return "CL_COMPILE_PROGRAM_FAILURE";                                       //  -15
+        case CL_LINKER_NOT_AVAILABLE: return "CL_LINKER_NOT_AVAILABLE";                                             //  -16
+        case CL_LINK_PROGRAM_FAILURE: return "CL_LINK_PROGRAM_FAILURE";                                             //  -17
+        case CL_DEVICE_PARTITION_FAILED: return "CL_DEVICE_PARTITION_FAILED";                                       //  -18
+        case CL_KERNEL_ARG_INFO_NOT_AVAILABLE: return "CL_KERNEL_ARG_INFO_NOT_AVAILABLE";                           //  -19
+        case CL_INVALID_VALUE: return "Invalid value";                                                              //  -30
+        case CL_INVALID_DEVICE_TYPE: return "Invalid device type";                                                  //  -31
+        case CL_INVALID_PLATFORM: return "Invalid platform";                                                        //  -32
+        case CL_INVALID_DEVICE: return "Invalid device";                                                            //  -33
+        case CL_INVALID_CONTEXT: return "Invalid context";                                                          //  -34
+        case CL_INVALID_QUEUE_PROPERTIES: return "Invalid queue properties";                                        //  -35
+        case CL_INVALID_COMMAND_QUEUE: return "Invalid command queue";                                              //  -36
+        case CL_INVALID_HOST_PTR: return "Invalid host pointer";                                                    //  -37
+        case CL_INVALID_MEM_OBJECT: return "Invalid memory object";                                                 //  -38
+        case CL_INVALID_IMAGE_FORMAT_DESCRIPTOR: return "Invalid image format descriptor";                          //  -39
+        case CL_INVALID_IMAGE_SIZE: return "Invalid image size";                                                    //  -40
+        case CL_INVALID_SAMPLER: return "Invalid sampler";                                                          //  -41
+        case CL_INVALID_BINARY: return "Invalid binary";                                                            //  -42
+        case CL_INVALID_BUILD_OPTIONS: return "Invalid build options";                                              //  -43
+        case CL_INVALID_PROGRAM: return "Invalid program";                                                          //  -44
+        case CL_INVALID_PROGRAM_EXECUTABLE: return "Invalid program executable";                                    //  -45
+        case CL_INVALID_KERNEL_NAME: return "Invalid kernel name";                                                  //  -46
+        case CL_INVALID_KERNEL_DEFINITION: return "Invalid kernel definition";                                      //  -47
+        case CL_INVALID_KERNEL: return "Invalid kernel";                                                            //  -48
+        case CL_INVALID_ARG_INDEX: return "Invalid argument index";                                                 //  -49
+        case CL_INVALID_ARG_VALUE: return "Invalid argument value";                                                 //  -50
+        case CL_INVALID_ARG_SIZE: return "Invalid argument size";                                                   //  -51
+        case CL_INVALID_KERNEL_ARGS: return "Invalid kernel arguments";                                             //  -52
+        case CL_INVALID_WORK_DIMENSION: return "Invalid work dimension";                                            //  -53
+        case CL_INVALID_WORK_GROUP_SIZE: return "Invalid work group size";                                          //  -54
+        case CL_INVALID_WORK_ITEM_SIZE: return "Invalid work item size";                                            //  -55
+        case CL_INVALID_GLOBAL_OFFSET: return "Invalid global offset";                                              //  -56
+        case CL_INVALID_EVENT_WAIT_LIST: return "Invalid event wait list";                                          //  -57
+        case CL_INVALID_EVENT: return "Invalid event";                                                              //  -58
+        case CL_INVALID_OPERATION: return "Invalid operation";                                                      //  -59
+        case CL_INVALID_GL_OBJECT: return "Invalid OpenGL object";                                                  //  -60
+        case CL_INVALID_BUFFER_SIZE: return "Invalid buffer size";                                                  //  -61
+        case CL_INVALID_MIP_LEVEL: return "Invalid mip-map level";                                                  //  -62
+        case CL_INVALID_GLOBAL_WORK_SIZE: return "CL_INVALID_GLOBAL_WORK_SIZE";                                     //  -63
+        case CL_INVALID_PROPERTY: return "CL_INVALID_PROPERTY";                                                     //  -64
+        case CL_INVALID_IMAGE_DESCRIPTOR: return "CL_INVALID_IMAGE_DESCRIPTOR";                                     //  -65
+        case CL_INVALID_COMPILER_OPTIONS: return "CL_INVALID_COMPILER_OPTIONS";                                     //  -66
+        case CL_INVALID_LINKER_OPTIONS: return "CL_INVALID_LINKER_OPTIONS";                                         //  -67
+        case CL_INVALID_DEVICE_PARTITION_COUNT: return "CL_INVALID_DEVICE_PARTITION_COUNT";                         //  -68
+        default: return "Unknown OpenCL error value";
+    }
 }
