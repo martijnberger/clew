@@ -41,6 +41,8 @@ if (error != CL_SUCCESS) {
 // etc ...
 ```
 
+* link with libclew.so/.a/.dll/.lib (as appropriate, according to platform and build options)
+
 ## To build
 
 ### On linux
@@ -87,4 +89,10 @@ To test it works ok.  You'll need at least one OpenCL-enabled device to do this 
 * change into the 'dist' directory you created
 * type 'clewTest'
 => should see something like 'num platforms: 1'
+
+## Build options
+
+* BUILD_TESTS: build test executable, default ON
+* BUILD_SHARED_LIBRARY: build dll/so, instead of .lib/.a.  default OFF
+
 

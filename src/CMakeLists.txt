@@ -1,5 +1,9 @@
 
-add_library( clew SHARED clew.c )
+if( BUILD_SHARED_LIBRARY )
+  add_library( clew SHARED clew.c )
+else()
+  add_library( clew clew.c )
+endif()
 
 set_target_properties(clew
     PROPERTIES

@@ -1,11 +1,15 @@
 project(clew)
 
+option( BUILD_TESTS "Build test program." ON )
+option( BUILD_SHARED_LIBRARY "Shared library, rather than static library." OFF )
+
 cmake_minimum_required (VERSION 2.6)
 if (NOT CMAKE_VERSION VERSION_LESS 2.8.4)
     cmake_policy (SET CMP0017 NEW)
 endif()
 
 include(CMakeParseArguments)
+
 
 if( "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" )
   set( ON_LINUX 1 )
@@ -28,6 +32,9 @@ if(CMAKE_COMPILER_IS_GNUCC)
 endif()
 
 add_definitions(-DCL_USE_DEPRECATED_OPENCL_1_1_APIS)
+if( NOT BUILD_SHARED_LIBRARY )
+  add_definitions(-Dclew_STATIC)
+endif()
 
 include_directories(include)
 
@@ -35,4 +42,7 @@ add_subdirectory(src)
 
 add_subdirectory(include)
 
-add_subdirectory(clewTest)
+if( BUILD_TESTS )
+  add_subdirectory(clewTest)
+endif( BUILD_TESTS )
+
