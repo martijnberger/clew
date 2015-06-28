@@ -2521,14 +2521,18 @@ typedef CL_API_ENTRY cl_int (CL_API_CALL *clGetGLContextInfoKHR_fn)(
 
 // #define CLEW_STATIC
 
-#ifdef CLEW_STATIC
-#  define CLEWAPI extern
+#ifdef _WIN32
+  #ifdef CLEW_STATIC
+  #  define CLEWAPI extern
+  #else
+  #  ifdef CLEW_BUILD
+  #    define CLEWAPI extern __declspec(dllexport)
+  #  else
+  #    define CLEWAPI extern __declspec(dllimport)
+  #  endif
+  #endif
 #else
-#  ifdef CLEW_BUILD
-#    define CLEWAPI extern __declspec(dllexport)
-#  else
-#    define CLEWAPI extern __declspec(dllimport)
-#  endif
+#  define CLEWAPI extern
 #endif
 
 //#if defined(_WIN32)
