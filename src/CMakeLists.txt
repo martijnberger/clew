@@ -12,9 +12,9 @@ set_target_properties(clew
         SOVERSION "1.0.0"
     )
 
-if( NOT ON_WINDOWS)
+if(UNIX)
 target_link_libraries( clew dl )
-endif(NOT ON_WINDOWS)
+endif(UNIX)
 
 install(TARGETS clew 
 	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib

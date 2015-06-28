@@ -10,14 +10,6 @@ endif()
 
 include(CMakeParseArguments)
 
-
-if( "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" )
-  set( ON_LINUX 1 )
-endif()
-if( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows" )
-  set( ON_WINDOWS 1 )
-endif()
-
 set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE)
 message(STATUS "Project source dir = ${PROJECT_SOURCE_DIR}")
 message(STATUS "Project build dir = ${CMAKE_BINARY_DIR}")
