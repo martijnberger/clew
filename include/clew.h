@@ -2427,6 +2427,19 @@ PFNCLCREATEFROMGLTEXTURE)(cl_context      /* context */,
                     cl_GLuint       /* texture */,
                     cl_int *        /* errcode_ret */) CL_API_SUFFIX__VERSION_1_2;
 
+//#ifdef CL_USE_OPENCL_1_2_APIS
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLENQUEUEFILLBUFFER)(
+    cl_command_queue  command_queue ,
+  	cl_mem  buffer ,
+  	const void  *pattern ,
+  	size_t  pattern_size ,
+  	size_t  offset ,
+  	size_t  size ,
+  	cl_uint  num_events_in_wait_list ,
+  	const cl_event  *event_wait_list ,
+  	cl_event  *event ) CL_API_SUFFIX__VERSION_1_2;
+//#endif // CL_USE_OPENCL_1_2_APIS
+
 typedef CL_API_ENTRY cl_mem (CL_API_CALL *
 PFNCLCREATEFROMGLRENDERBUFFER)(cl_context   /* context */,
                          cl_mem_flags /* flags */,
@@ -2646,6 +2659,10 @@ CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE3D          __clewCreateFromGLTextur
 #endif
 CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clewGetGLContextInfoKHR           ;
 
+//#ifdef CL_USE_OPENCL_1_2_APIS
+CLEW_FUN_EXPORT     PFNCLENQUEUEFILLBUFFER                __clewEnqueueFillBuffer               ;
+//#endif
+
 #define	clGetPlatformIDs                CLEW_GET_FUN(__clewGetPlatformIDs                )
 #define	clGetPlatformInfo               CLEW_GET_FUN(__clewGetPlatformInfo               )
 #define	clGetDeviceIDs                  CLEW_GET_FUN(__clewGetDeviceIDs                  )
@@ -2754,6 +2771,11 @@ CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clewGetGLContextInfoKH
 #define	clCreateFromGLTexture3D         CLEW_GET_FUN(__clewCreateFromGLTexture3D         )
 #endif
 #define	clGetGLContextInfoKHR           CLEW_GET_FUN(__clewGetGLContextInfoKHR           )
+
+
+//#ifdef CL_USE_OPENCL_1_2_APIS
+#define	clEnqueueFillBuffer           CLEW_GET_FUN(__clewEnqueueFillBuffer           )
+//#endif // USE_OPENCL_1_2_APIS
 
 
 #define CLEW_SUCCESS                0       //!<    Success error code
