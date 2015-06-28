@@ -81,6 +81,7 @@ Procedure:
   * change the CMAKE_INSTALL_PREFIX to new sub-directory 'dist'
   * click 'configure' then 'generate'
 * now open visual studio, and open the solution from the build directory
+* change build type from 'Debug' to 'Release'
 * build the solution
 * build the project 'INSTALL'
 
