@@ -8,3 +8,36 @@ This basically works like glew, but for OpenCL
 ## Code history
 
 * The code was originally part of a larger project, then was factorized out into a standalone github project
+
+## To use in your code
+
+Include it
+```
+#include "clew.h"
+```
+
+Initialize it
+```
+bool clpresent = 0 == clewInit();
+if( !clpresent ) {
+    throw std::runtime_error("OpenCL library not found");
+}
+```
+
+Use standard OpenCL method calls, as though you were linking directly with OpenCL:
+
+```
+context = new cl_context();
+*context = clCreateContext(0, 1, &device, NULL, NULL, &error);
+if (error != CL_SUCCESS) {
+   throw std::runtime_error( "Error creating context: " + errorMessage(error) );
+}
+// Command-queue
+queue = new cl_command_queue;
+*queue = clCreateCommandQueue(*context, device, 0, &error);
+if (error != CL_SUCCESS) {
+   throw std::runtime_error( "Error creating command queue: " + errorMessage(error) );
+}
+// etc ...
+```
+
