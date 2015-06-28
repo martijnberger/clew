@@ -41,3 +41,50 @@ if (error != CL_SUCCESS) {
 // etc ...
 ```
 
+## To build
+
+### On linux
+
+You'll need:
+* cmake
+* gcc, g++
+
+Procedure:
+```
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=../dist
+make -j 4 install
+```
+
+To test it works ok.  You'll need at least one OpenCL-enabled device to do this bit:
+```
+LD_LIBRARY_PATH=../dist/lib ../dist/bin/clewTest
+```
+=> should see something like 'num platforms: 1'
+
+
+### On Windows
+
+You'll need:
+* cmake
+* Visual Studio 2010 (actually, can probably use any version, but this was tested with this version)
+
+Procedure:
+* first do the cmake part:
+  * open cmake, set the source directory to the location of this source code
+  * set the build directory to new subdirectory 'build'
+  * click 'configure'
+  * choose a generator, eg visual studio 2010
+  * change the CMAKE_INSTALL_PREFIX to new sub-directory 'dist'
+  * click 'configure' then 'generate'
+* now open visual studio, and open the solution from the build directory
+* build the solution
+* build the project 'INSTALL'
+
+To test it works ok.  You'll need at least one OpenCL-enabled device to do this bit:
+* open a cmd
+* change into the 'dist' directory you created
+* type 'clewTest'
+=> should see something like 'num platforms: 1'
+
