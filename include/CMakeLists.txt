@@ -1,6 +1,7 @@
 
 set(PUBLIC_HEADERS
     clew.h
+	CL/cl.h
 )
 
 install( 

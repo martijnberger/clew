@@ -2519,7 +2519,7 @@ typedef CL_API_ENTRY cl_int (CL_API_CALL *clGetGLContextInfoKHR_fn)(
   void *                        param_value,
   size_t *                      param_value_size_ret);
 
-#define CLEW_STATIC
+// #define CLEW_STATIC
 
 #ifdef CLEW_STATIC
 #  define CLEWAPI extern
@@ -2531,11 +2531,11 @@ typedef CL_API_ENTRY cl_int (CL_API_CALL *clGetGLContextInfoKHR_fn)(
 #  endif
 #endif
 
-#if defined(_WIN32)
-#define CLEW_FUN_EXPORT extern
-#else
+//#if defined(_WIN32)
+//#define CLEW_FUN_EXPORT extern
+//#else
 #define CLEW_FUN_EXPORT CLEWAPI
-#endif
+//#endif
 
 #define CLEW_GET_FUN(x) x
 
@@ -2757,9 +2757,9 @@ CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clewGetGLContextInfoKH
 #define CLEW_ERROR_ATEXIT_FAILED    -2      //!<    Error code for failing to queue the closing of the dynamic library to atexit()
 
 //! \brief Load OpenCL dynamic library and set function entry points
-int         clewInit        ();
+CLEW_FUN_EXPORT int         clewInit        ();
 //! \brief Convert an OpenCL error code to its string equivalent
-const char* clewErrorString (cl_int error);
+CLEW_FUN_EXPORT const char* clewErrorString (cl_int error);
 
 #ifdef __cplusplus
 }
