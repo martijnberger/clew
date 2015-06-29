@@ -2785,7 +2785,7 @@ CLEW_FUN_EXPORT     PFNCLENQUEUEFILLBUFFER                __clewEnqueueFillBuffe
 #define CLEW_ERROR_ATEXIT_FAILED    -2      //!<    Error code for failing to queue the closing of the dynamic library to atexit()
 
 //! \brief Load OpenCL dynamic library and set function entry points
-CLEW_FUN_EXPORT int         clewInit        ();
+CLEW_FUN_EXPORT int         clewInit        (void);
 //! \brief Convert an OpenCL error code to its string equivalent
 CLEW_FUN_EXPORT const char* clewErrorString (cl_int error);
 
