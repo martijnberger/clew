@@ -1,13 +1,22 @@
 
-add_library( clewlib SHARED clew.c )
+if( BUILD_SHARED_LIBRARY )
+  add_library( clew SHARED clew.c )
+else()
+  add_library( clew clew.c )
+endif()
 
-set_target_properties(clewlib
+set_target_properties(clew
     PROPERTIES
         OUTPUT_NAME clew
         CLEAN_DIRECT_OUTPUT 1
         SOVERSION "1.0.0"
     )
 
-target_link_libraries( clewlib dl )
+if(UNIX)
+target_link_libraries( clew dl )
+endif(UNIX)
 
-install(TARGETS clewlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(TARGETS clew 
+	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

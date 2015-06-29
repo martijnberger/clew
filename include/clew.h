@@ -2427,6 +2427,19 @@ PFNCLCREATEFROMGLTEXTURE)(cl_context      /* context */,
                     cl_GLuint       /* texture */,
                     cl_int *        /* errcode_ret */) CL_API_SUFFIX__VERSION_1_2;
 
+//#ifdef CL_USE_OPENCL_1_2_APIS
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLENQUEUEFILLBUFFER)(
+    cl_command_queue  command_queue ,
+  	cl_mem  buffer ,
+  	const void  *pattern ,
+  	size_t  pattern_size ,
+  	size_t  offset ,
+  	size_t  size ,
+  	cl_uint  num_events_in_wait_list ,
+  	const cl_event  *event_wait_list ,
+  	cl_event  *event ) CL_API_SUFFIX__VERSION_1_2;
+//#endif // CL_USE_OPENCL_1_2_APIS
+
 typedef CL_API_ENTRY cl_mem (CL_API_CALL *
 PFNCLCREATEFROMGLRENDERBUFFER)(cl_context   /* context */,
                          cl_mem_flags /* flags */,
@@ -2519,23 +2532,29 @@ typedef CL_API_ENTRY cl_int (CL_API_CALL *clGetGLContextInfoKHR_fn)(
   void *                        param_value,
   size_t *                      param_value_size_ret);
 
-#define CLEW_STATIC
+// #define CLEW_STATIC
 
-#ifdef CLEW_STATIC
+#ifdef _WIN32
+  #ifdef clew_STATIC
+  #  define CLEWAPI extern
+  #else
+  #  ifdef clew_EXPORTS
+#pragma message("exporting")
+  #    define CLEWAPI extern __declspec(dllexport)
+  #  else
+#pragma message("importing")
+  #    define CLEWAPI extern __declspec(dllimport)
+  #  endif
+  #endif
+#else
 #  define CLEWAPI extern
-#else
-#  ifdef CLEW_BUILD
-#    define CLEWAPI extern __declspec(dllexport)
-#  else
-#    define CLEWAPI extern __declspec(dllimport)
-#  endif
 #endif
 
-#if defined(_WIN32)
-#define CLEW_FUN_EXPORT extern
-#else
+//#if defined(_WIN32)
+//#define CLEW_FUN_EXPORT extern
+//#else
 #define CLEW_FUN_EXPORT CLEWAPI
-#endif
+//#endif
 
 #define CLEW_GET_FUN(x) x
 
@@ -2641,6 +2660,10 @@ CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE2D          __clewCreateFromGLTextur
 CLEW_FUN_EXPORT     PFNCLCREATEFROMGLTEXTURE3D          __clewCreateFromGLTexture3D         ;
 #endif
 CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clewGetGLContextInfoKHR           ;
+
+//#ifdef CL_USE_OPENCL_1_2_APIS
+CLEW_FUN_EXPORT     PFNCLENQUEUEFILLBUFFER                __clewEnqueueFillBuffer               ;
+//#endif
 
 #define	clGetPlatformIDs                CLEW_GET_FUN(__clewGetPlatformIDs                )
 #define	clGetPlatformInfo               CLEW_GET_FUN(__clewGetPlatformInfo               )
@@ -2752,14 +2775,19 @@ CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clewGetGLContextInfoKH
 #define	clGetGLContextInfoKHR           CLEW_GET_FUN(__clewGetGLContextInfoKHR           )
 
 
+//#ifdef CL_USE_OPENCL_1_2_APIS
+#define	clEnqueueFillBuffer           CLEW_GET_FUN(__clewEnqueueFillBuffer           )
+//#endif // USE_OPENCL_1_2_APIS
+
+
 #define CLEW_SUCCESS                0       //!<    Success error code
 #define CLEW_ERROR_OPEN_FAILED      -1      //!<    Error code for failing to open the dynamic library
 #define CLEW_ERROR_ATEXIT_FAILED    -2      //!<    Error code for failing to queue the closing of the dynamic library to atexit()
 
 //! \brief Load OpenCL dynamic library and set function entry points
-int         clewInit        ();
+CLEW_FUN_EXPORT int         clewInit        (void);
 //! \brief Convert an OpenCL error code to its string equivalent
-const char* clewErrorString (cl_int error);
+CLEW_FUN_EXPORT const char* clewErrorString (cl_int error);
 
 #ifdef __cplusplus
 }

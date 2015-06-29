@@ -12,3 +12,14 @@ install(
         OWNER_READ
         GROUP_READ
         WORLD_READ )
+
+install( 
+    FILES 
+        CL/cl.h CL/opencl.h
+    DESTINATION
+        ${CMAKE_INSTALL_PREFIX}/include/CL
+    PERMISSIONS
+        OWNER_READ
+        GROUP_READ
+        WORLD_READ )
+

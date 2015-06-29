@@ -3,3 +3,7 @@
 /build*
 /inst*
 
+
+build*/
+
+dist/

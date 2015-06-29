@@ -109,6 +109,7 @@ PFNCLENQUEUENDRANGEKERNEL           __clewEnqueueNDRangeKernel          = NULL;
 PFNCLENQUEUETASK                    __clewEnqueueTask                   = NULL;
 PFNCLENQUEUENATIVEKERNEL            __clewEnqueueNativeKernel           = NULL;
 
+PFNCLENQUEUEFILLBUFFER            __clewEnqueueFillBuffer           = NULL;
 
 
 PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensionFunctionAddressForPlatform = NULL;
@@ -291,6 +292,10 @@ int clewInit()
     #endif
     __clewGetGLContextInfoKHR           = (PFNCLGETGLCONTEXTINFOKHR         )CLEW_DYNLIB_IMPORT(module, "clGetGLContextInfoKHR");
 
+//    #ifdef CL_USE_OPENCL_1_2_APIS
+    __clewEnqueueFillBuffer                = (PFNCLENQUEUEFILLBUFFER              )CLEW_DYNLIB_IMPORT(module, "clEnqueueFillBuffer");
+ //   #endif
+
 
     if(__clewGetPlatformIDs == NULL) return 0;
     if(__clewGetPlatformInfo == NULL) return 0;
@@ -299,6 +304,7 @@ int clewInit()
 
     return CLEW_SUCCESS;
 }
+
 
 const char* clewErrorString(cl_int error)
 {
