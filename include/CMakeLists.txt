@@ -13,6 +13,7 @@ install(
         GROUP_READ
         WORLD_READ )
 
+if( INSTALL_CL_HEADER )
 install( 
     FILES 
         CL/cl.h CL/opencl.h
@@ -22,4 +23,4 @@ install(
         OWNER_READ
         GROUP_READ
         WORLD_READ )
-
+endif()
