@@ -1324,6 +1324,7 @@ typedef cl_uint             cl_command_queue_info;
 typedef cl_uint             cl_channel_order;
 typedef cl_uint             cl_channel_type;
 typedef cl_bitfield         cl_mem_flags;
+typedef cl_bitfield         cl_mem_migration_flags;
 typedef cl_uint             cl_mem_object_type;
 typedef cl_uint             cl_mem_info;
 typedef cl_uint             cl_image_info;
@@ -1336,6 +1337,7 @@ typedef cl_uint             cl_program_info;
 typedef cl_uint             cl_program_build_info;
 typedef cl_int              cl_build_status;
 typedef cl_uint             cl_kernel_info;
+typedef cl_uint             cl_kernel_arg_info;
 typedef cl_uint             cl_kernel_work_group_info;
 typedef cl_uint             cl_event_info;
 typedef cl_uint             cl_command_type;
@@ -2438,6 +2440,70 @@ typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLENQUEUEFILLBUFFER)(
   	cl_uint  num_events_in_wait_list ,
   	const cl_event  *event_wait_list ,
   	cl_event  *event ) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLCOMPILEPROGRAM)(
+		cl_program               /*program*/,
+  		cl_uint                  /*num_devices*/,
+  		const cl_device_id *     /*device_list*/,
+  		const char *             /*options*/,
+  		cl_uint                  /*num_input_headers*/,
+  		const cl_program *       /*input_headers*/,
+  		const char **            /*header_include_names*/,
+  		void (CL_CALLBACK *      /*pfn_notify*/) (cl_program /*program*/, void* /*user_data*/),
+  		void *                   /*user_data*/) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_program (CL_API_CALL *PFNCLLINKPROGRAM)(
+		cl_context               /*context*/,
+  		cl_uint                  /*num_devices*/,
+  		const cl_device_id *     /*device_list*/,
+  		const char *             /*options*/,
+  		cl_uint                  /*num_input_programs*/,
+  		const cl_program *       /*input_programs*/,
+  		void (CL_CALLBACK *      /*pfn_notify*/) (cl_program /*program*/, void* /*user_data*/),
+  		void *                   /*user_data*/,
+  		cl_int *                 /*errcode_ret*/) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLGETKERNELARGINFO)(
+		cl_kernel                /*kernel*/ ,
+  		cl_uint                  /*arg_indx*/ ,
+  		cl_kernel_arg_info       /*param_name*/ ,
+  		size_t                   /*param_value_size*/ ,
+  		void  *                  /*param_value*/ ,
+  		size_t  *                /*param_value_size_ret*/ ) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLENQUEUEFILLIMAGE)(
+		cl_command_queue         /*command_queue*/,
+  		cl_mem                   /*image*/,
+  		const void *             /*fill_color*/,
+  		const size_t *           /*origin*/,
+  		const size_t *           /*region*/,
+  		cl_uint                  /*num_events_in_wait_list*/,
+  		const cl_event *         /*event_wait_list*/,
+  		cl_event *               /*event*/) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLENQUEUEMIGRATEMEMOBJECTS)(
+		cl_command_queue         /*command_queue*/ ,
+  		cl_uint                  /*num_mem_objects */,
+  		const cl_mem  *          /*mem_objects*/ ,
+  		cl_mem_migration_flags   /*flags*/ ,
+  		cl_uint                  /*num_events_in_wait_list*/ ,
+  		const cl_event  *        /*event_wait_list*/ ,
+  		cl_event  *              /*event*/ ) CL_API_SUFFIX__VERSION_1_2;
+
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLENQUEUEBARRIERWITHWAITLIST)(
+		cl_command_queue         /*command_queue*/ ,
+  		cl_uint                  /*num_events_in_wait_list*/ ,
+  		const cl_event  *        /*event_wait_list*/ ,
+  		cl_event  *              /*event*/ ) CL_API_SUFFIX__VERSION_1_2;
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLENQUEUEMARKERWITHWAITLIST)(
+		cl_command_queue         /*command_queue*/ ,
+ 		cl_uint                  /*num_events_in_wait_list*/ ,
+ 		const cl_event  *        /*event_wait_list*/ ,
+ 		cl_event  *              /*event*/ ) CL_API_SUFFIX__VERSION_1_2;
+typedef CL_API_ENTRY cl_int (CL_API_CALL *PFNCLUNLOADPLATFORMCOMPILER)(
+		cl_platform_id           /*platform*/) CL_API_SUFFIX__VERSION_1_2;
+
+
 //#endif // CL_USE_OPENCL_1_2_APIS
 
 typedef CL_API_ENTRY cl_mem (CL_API_CALL *
@@ -2663,6 +2729,14 @@ CLEW_FUN_EXPORT     PFNCLGETGLCONTEXTINFOKHR            __clewGetGLContextInfoKH
 
 //#ifdef CL_USE_OPENCL_1_2_APIS
 CLEW_FUN_EXPORT     PFNCLENQUEUEFILLBUFFER                __clewEnqueueFillBuffer               ;
+CLEW_FUN_EXPORT     PFNCLCOMPILEPROGRAM                 __clewCompileProgram                ;
+CLEW_FUN_EXPORT     PFNCLLINKPROGRAM                    __clewLinkProgram                   ;
+CLEW_FUN_EXPORT     PFNCLGETKERNELARGINFO               __clewGetKernelArgInfo              ;
+CLEW_FUN_EXPORT     PFNCLENQUEUEFILLIMAGE               __clewEnqueueFillImage              ;
+CLEW_FUN_EXPORT     PFNCLENQUEUEMIGRATEMEMOBJECTS       __clewEnqueueMigrateMemObjects      ;
+CLEW_FUN_EXPORT     PFNCLENQUEUEBARRIERWITHWAITLIST     __clewEnqueueBarrierWithWaitList    ;
+CLEW_FUN_EXPORT     PFNCLENQUEUEMARKERWITHWAITLIST      __clewEnqueueMarkerWithWaitList     ;
+CLEW_FUN_EXPORT     PFNCLUNLOADPLATFORMCOMPILER         __clewUnloadPlatformCompiler        ;
 //#endif
 
 #define	clGetPlatformIDs                CLEW_GET_FUN(__clewGetPlatformIDs                )
@@ -2777,7 +2851,18 @@ CLEW_FUN_EXPORT     PFNCLENQUEUEFILLBUFFER                __clewEnqueueFillBuffe
 
 //#ifdef CL_USE_OPENCL_1_2_APIS
 #define	clEnqueueFillBuffer           CLEW_GET_FUN(__clewEnqueueFillBuffer           )
+#define clCompileProgram                CLEW_GET_FUN(__clewCompileProgram                )
+#define clLinkProgram                   CLEW_GET_FUN(__clewLinkProgram                   )
+#define clGetKernelArgInfo              CLEW_GET_FUN(__clewGetKernelArgInfo              )
+#define clEnqueueFillImage              CLEW_GET_FUN(__clewEnqueueFillImage              )
+#define clEnqueueMigrateMemObjects      CLEW_GET_FUN(__clewEnqueueMigrateMemObjects      )
+#define clEnqueueBarrierWithWaitList    CLEW_GET_FUN(__clewEnqueueBarrierWithWaitList    )
+#define clEnqueueMarkerWithWaitList     CLEW_GET_FUN(__clewEnqueueMarkerWithWaitList     )
+#define clUnloadPlatformCompiler        CLEW_GET_FUN(__clewUnloadPlatformCompiler        )
 //#endif // USE_OPENCL_1_2_APIS
+#define clRetainDevice                  CLEW_GET_FUN(__clewRetainDevice                  )
+#define clReleaseDevice                 CLEW_GET_FUN(__clewReleaseDevice                 )
+#define clCreateSubDevices              CLEW_GET_FUN(__clewCreateSubDevices              )
 
 
 #define CLEW_SUCCESS                0       //!<    Success error code
