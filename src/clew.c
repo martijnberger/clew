@@ -110,6 +110,14 @@ PFNCLENQUEUETASK                    __clewEnqueueTask                   = NULL;
 PFNCLENQUEUENATIVEKERNEL            __clewEnqueueNativeKernel           = NULL;
 
 PFNCLENQUEUEFILLBUFFER            __clewEnqueueFillBuffer           = NULL;
+PFNCLCOMPILEPROGRAM                 __clewCompileProgram                = NULL;
+PFNCLLINKPROGRAM                    __clewLinkProgram                   = NULL;
+PFNCLGETKERNELARGINFO               __clewGetKernelArgInfo              = NULL;
+PFNCLENQUEUEFILLIMAGE               __clewEnqueueFillImage              = NULL;
+PFNCLENQUEUEMIGRATEMEMOBJECTS       __clewEnqueueMigrateMemObjects      = NULL;
+PFNCLENQUEUEBARRIERWITHWAITLIST     __clewEnqueueBarrierWithWaitList    = NULL;
+PFNCLENQUEUEMARKERWITHWAITLIST      __clewEnqueueMarkerWithWaitList     = NULL;
+PFNCLUNLOADPLATFORMCOMPILER         __clewUnloadPlatformCompiler        = NULL;
 
 
 PFNCLGETEXTENSIONFUNCTIONADDRESSFORPLATFORM __clewGetExtensionFunctionAddressForPlatform = NULL;
@@ -294,6 +302,15 @@ int clewInit()
 
 //    #ifdef CL_USE_OPENCL_1_2_APIS
     __clewEnqueueFillBuffer                = (PFNCLENQUEUEFILLBUFFER              )CLEW_DYNLIB_IMPORT(module, "clEnqueueFillBuffer");
+    __clewCompileProgram                = (PFNCLCOMPILEPROGRAM              )CLEW_DYNLIB_IMPORT(module, "clCompileProgram");
+    __clewLinkProgram                   = (PFNCLLINKPROGRAM                 )CLEW_DYNLIB_IMPORT(module, "clLinkProgram");
+    __clewGetKernelArgInfo              = (PFNCLGETKERNELARGINFO            )CLEW_DYNLIB_IMPORT(module, "clGetKernelArgInfo");
+    __clewEnqueueFillImage              = (PFNCLENQUEUEFILLIMAGE            )CLEW_DYNLIB_IMPORT(module, "clEnqueueFillImage");
+    __clewEnqueueMigrateMemObjects      = (PFNCLENQUEUEMIGRATEMEMOBJECTS    )CLEW_DYNLIB_IMPORT(module, "clEnqueueMigrateMemObjects");
+    __clewEnqueueBarrierWithWaitList    = (PFNCLENQUEUEBARRIERWITHWAITLIST  )CLEW_DYNLIB_IMPORT(module, "clEnqueueBarrierWithWaitList");
+    __clewEnqueueMarkerWithWaitList     = (PFNCLENQUEUEMARKERWITHWAITLIST   )CLEW_DYNLIB_IMPORT(module, "clEnqueueMarkerWithWaitList");
+    __clewUnloadPlatformCompiler        = (PFNCLUNLOADPLATFORMCOMPILER      )CLEW_DYNLIB_IMPORT(module, "clUnloadPlatformCompiler");
+
  //   #endif
 
 
