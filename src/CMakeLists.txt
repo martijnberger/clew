@@ -1,3 +1,6 @@
+SET(MAJOR_VERSION 1)
+SET(MINOR_VERSION 0)
+SET(MICRO_VERSION 0)
 
 if( BUILD_SHARED_LIBRARY )
   add_library( clew SHARED clew.c )
@@ -9,7 +12,8 @@ set_target_properties(clew
     PROPERTIES
         OUTPUT_NAME clew
         CLEAN_DIRECT_OUTPUT 1
-        SOVERSION "1.0.0"
+        VERSION "${MAJOR_VERSION}.${MINOR_VERSION}.${MICRO_VERSION}"
+        SOVERSION "${MAJOR_VERSION}"
     )
 
 if(UNIX)
